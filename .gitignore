@@ -1,0 +1,20 @@
+# Local vendor documents, data, model binaries and runtime state
+refs/
+data/
+artifacts/
+tmp/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+*.log
+*.pt
+*.pth
+*.tflite
+*.onnx
+*.npz
+*.zip
+.jupyter/

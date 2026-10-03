@@ -1,0 +1,184 @@
+{
+  "config": {
+    "epochs": 25,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "augment": true
+  },
+  "device": "cuda",
+  "torch": "2.14.1+cu132",
+  "cuda": "13.2",
+  "best_epoch": 22,
+  "seconds": 26.94396139998571,
+  "manifest_sha256": "a058db32313692a582a6ca97ffeda42ee0ce3976f15857e121fea57b1c5ad3d5",
+  "validation": {
+    "samples": 504,
+    "accuracy": 0.9880952380952381,
+    "macro_f1": 0.9880702080028798,
+    "confusion_matrix": [
+      [
+        163,
+        1,
+        4
+      ],
+      [
+        1,
+        167,
+        0
+      ],
+      [
+        0,
+        0,
+        168
+      ]
+    ],
+    "per_class": {
+      "paper": {
+        "precision": 0.9939024390243902,
+        "recall": 0.9702380952380952,
+        "f1": 0.9819277108433735,
+        "support": 168
+      },
+      "rock": {
+        "precision": 0.9940476190476191,
+        "recall": 0.9940476190476191,
+        "f1": 0.9940476190476191,
+        "support": 168
+      },
+      "scissors": {
+        "precision": 0.9767441860465116,
+        "recall": 1.0,
+        "f1": 0.988235294117647,
+        "support": 168
+      }
+    },
+    "loss": 0.10345413760533409
+  },
+  "complexity": {
+    "parameters": 7427,
+    "macs": 2655744,
+    "layers": [
+      {
+        "layer": "features.0",
+        "type": "Conv2d",
+        "output": [
+          1,
+          8,
+          64,
+          64
+        ],
+        "macs": 294912
+      },
+      {
+        "layer": "features.1",
+        "type": "ReLU",
+        "output": [
+          1,
+          8,
+          64,
+          64
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.2",
+        "type": "MaxPool2d",
+        "output": [
+          1,
+          8,
+          32,
+          32
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.3",
+        "type": "Conv2d",
+        "output": [
+          1,
+          16,
+          32,
+          32
+        ],
+        "macs": 1179648
+      },
+      {
+        "layer": "features.4",
+        "type": "ReLU",
+        "output": [
+          1,
+          16,
+          32,
+          32
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.5",
+        "type": "MaxPool2d",
+        "output": [
+          1,
+          16,
+          16,
+          16
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.6",
+        "type": "Conv2d",
+        "output": [
+          1,
+          32,
+          16,
+          16
+        ],
+        "macs": 1179648
+      },
+      {
+        "layer": "features.7",
+        "type": "ReLU",
+        "output": [
+          1,
+          32,
+          16,
+          16
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.8",
+        "type": "MaxPool2d",
+        "output": [
+          1,
+          32,
+          8,
+          8
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.9",
+        "type": "AvgPool2d",
+        "output": [
+          1,
+          32,
+          4,
+          4
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "classifier",
+        "type": "Linear",
+        "output": [
+          1,
+          3
+        ],
+        "macs": 1536
+      }
+    ]
+  }
+}

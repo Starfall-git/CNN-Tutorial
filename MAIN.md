@@ -1,4 +1,36 @@
-# 版本迭代说明与约束申明
+# CNN-Tutorial · 版本、约束与阶段
+
+当前版本：**v0.1.0 候选：灰度手势 CNN 教学基线**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
+
+**阶段勾选由用户确认；代理不自行勾选。** 下方保留原始需求与阶段清单。当前模型 1 已选择固定 ROI 的 64×64 灰度石头/剪刀/布分类。
+
+## 当前实施约束
+
+1. 使用已有 conda `CNN-Tutorial` 训练环境；框架版本与 GPU 以实测快照为准。
+2. 板卡部署入口为全整数 INT8 `.tflite` + TinyML/TFLite Micro。PyTorch 文件、ONNX 或 PC 推理成功不等于板卡兼容。
+3. 参数量、MACs、模型大小、tensor arena 和板上延迟分别报告。15 FPS 是待实测目标。
+4. 使用原始灰度/彩色图像训练；Sobel 保持独立功能。首个模型优先复用 AR0135。
+5. 验证集用于选模；最终测试不用来训练、调参或校准。公开数据成绩与实拍成绩分别记录。
+6. 每段 notebook 代码前放 Markdown 说明，基础语法简表在末尾；Python 模块保存共享实现。
+7. `refs/` 原始厂商资料、数据、大权重和运行凭证留在本地；Git 同步代码、教程与小体积实验报告。
+8. 每个主要版本检查、commit、push、PR；阶段确认后同步 MAIN 勾选。首版保留 PR 供审阅。
+
+## 文档与学习入口
+
+| 主题 | 文件 |
+|---|---|
+| 环境与启动 | [环境说明](docs/01_setup/environment.md) |
+| 模型与关键源码 | [灰度 CNN](docs/02_model/gray_gesture_cnn.md) |
+| 数据、训练、验证与云端流程 | [训练说明](docs/03_training/data_and_evaluation.md) |
+| 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
+| 真实实验记录 | [v0.1.0 基线](docs/05_experiments/v0.1.0_baseline.md) |
+| GitHub 与 Code Review | [版本工作流](docs/06_workflow/versioning.md) |
+
+Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](notebooks/01_gray_gesture_cnn.ipynb) → [02 训练验证](notebooks/02_train_validate.ipynb)。
+
+---
+
+## 原始需求与阶段清单
 
 > 可以链接到.\docs\下的markdown文件去。
 
@@ -56,6 +88,13 @@
 
 
 ## 版本迭代
+
+| 版本 | 状态 | 记录 |
+|---|---|---|
+| 初始需求 | 已归档到 Git 历史 | 原始 MAIN 与本地资料边界 |
+| v0.1.0 | 候选，待用户阶段确认 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
+
+下一步按真实采集/分组评估 → 优化候选 → INT8 回归 → 板端静态对齐 → 连续视频叠加推进。等用户提供实际 FPGA 工程后，核定器件、时钟、工具版本与剩余资源。
 
 
 

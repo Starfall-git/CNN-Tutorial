@@ -1,0 +1,11 @@
+{
+  "cli_run": "artifacts/rps-v0.1-baseline",
+  "notebook_run": "artifacts/rps-20261004-002559-165667",
+  "all_epoch_metrics_identical": true,
+  "test_confusion_identical": true,
+  "notebooks_executed": [
+    "00_environment.ipynb",
+    "01_gray_gesture_cnn.ipynb",
+    "02_train_validate.ipynb"
+  ]
+}

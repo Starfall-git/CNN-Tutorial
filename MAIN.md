@@ -99,8 +99,8 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 | 版本 | 状态 | 记录 |
 |---|---|---|
 | 初始需求 | 已归档到 Git 历史 | 原始 MAIN 与本地资料边界 |
-| v0.1.0 | 候选，待用户阶段确认 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
-| v0.2.0 | 候选，待用户阶段确认 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
+| v0.1.0 | 阶段 1 已确认，PR #1 已合并 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
+| v0.2.0 | 当前工作完成后按用户授权合并 PR #2；阶段 2/3 待勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
 
 ### 后续执行约定（用户补充）
 

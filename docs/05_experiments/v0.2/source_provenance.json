@@ -1,0 +1,8 @@
+{
+  "collected": "after training; model/data/training sources unchanged during runs",
+  "sources": {
+    "model.py": "f75666aae44f85054b277e2e55b97f1352295dc92679a77fad8bda2c8cbec247",
+    "data.py": "e11bb13c75e528ff2d977f69ea95ad2885490216d34b00a28a65a68a91293363",
+    "training.py": "0b039def274bab5cfa5ae212db10c5502835537cc7e2292253d9d9d5f0850436"
+  }
+}

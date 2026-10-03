@@ -1,0 +1,45 @@
+{
+  "samples": 372,
+  "accuracy": 0.956989247311828,
+  "macro_f1": 0.9562668648125919,
+  "confusion_matrix": [
+    [
+      108,
+      11,
+      5
+    ],
+    [
+      0,
+      124,
+      0
+    ],
+    [
+      0,
+      0,
+      124
+    ]
+  ],
+  "per_class": {
+    "paper": {
+      "precision": 1.0,
+      "recall": 0.8709677419354839,
+      "f1": 0.9310344827586207,
+      "support": 124
+    },
+    "rock": {
+      "precision": 0.9185185185185185,
+      "recall": 1.0,
+      "f1": 0.9575289575289575,
+      "support": 124
+    },
+    "scissors": {
+      "precision": 0.9612403100775194,
+      "recall": 1.0,
+      "f1": 0.9802371541501977,
+      "support": 124
+    }
+  },
+  "loss": 0.10119984635422306,
+  "checkpoint_sha256": "ed3e422f75b1765953cddc91fd49ab0f140e43f5c2c72e2a69785930365972ad",
+  "scope": "official synthetic RPS test; not camera/subject generalization"
+}

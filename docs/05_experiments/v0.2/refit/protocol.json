@@ -1,0 +1,17 @@
+{
+  "config": {
+    "epochs": 36,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "augment": true,
+    "width": 16,
+    "augment_policy": "affine",
+    "manifest_file": "manifest_refit.json"
+  },
+  "lr_horizon": 60,
+  "selection_sha256": "254d17a1b27466d5c9638d6277db91174b19fbcf63eca89c7925f219d996a21f",
+  "weights": "fresh seeded initialization, final epoch saved; no validation selection",
+  "official_test_used_for_training": false
+}

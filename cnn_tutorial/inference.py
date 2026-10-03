@@ -12,7 +12,7 @@ def predict_roi(checkpoint_path, image_path):
     checkpoint = torch.load(Path(checkpoint_path), map_location="cpu", weights_only=True)
     if checkpoint["classes"] != list(CLASSES):
         raise ValueError("Checkpoint class order differs from the input/output contract")
-    model = GrayGestureCNN()
+    model = GrayGestureCNN(width=checkpoint["config"].get("width", 8))
     model.load_state_dict(checkpoint["state_dict"])
     model.eval()
     with Image.open(image_path) as image:

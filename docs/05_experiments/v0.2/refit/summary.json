@@ -1,0 +1,142 @@
+{
+  "config": {
+    "epochs": 36,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "augment": true,
+    "width": 16,
+    "augment_policy": "affine",
+    "manifest_file": "manifest_refit.json"
+  },
+  "train_samples": 2520,
+  "checkpoint_sha256": "ed3e422f75b1765953cddc91fd49ab0f140e43f5c2c72e2a69785930365972ad",
+  "manifest_sha256": "9b7fa901143ac132c8966f2eb7ecdddbcef0d23279a9b2d252f75dab1afe1b3d",
+  "complexity": {
+    "parameters": 26371,
+    "macs": 10030080,
+    "layers": [
+      {
+        "layer": "features.0",
+        "type": "Conv2d",
+        "output": [
+          1,
+          16,
+          64,
+          64
+        ],
+        "macs": 589824
+      },
+      {
+        "layer": "features.1",
+        "type": "ReLU",
+        "output": [
+          1,
+          16,
+          64,
+          64
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.2",
+        "type": "MaxPool2d",
+        "output": [
+          1,
+          16,
+          32,
+          32
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.3",
+        "type": "Conv2d",
+        "output": [
+          1,
+          32,
+          32,
+          32
+        ],
+        "macs": 4718592
+      },
+      {
+        "layer": "features.4",
+        "type": "ReLU",
+        "output": [
+          1,
+          32,
+          32,
+          32
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.5",
+        "type": "MaxPool2d",
+        "output": [
+          1,
+          32,
+          16,
+          16
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.6",
+        "type": "Conv2d",
+        "output": [
+          1,
+          64,
+          16,
+          16
+        ],
+        "macs": 4718592
+      },
+      {
+        "layer": "features.7",
+        "type": "ReLU",
+        "output": [
+          1,
+          64,
+          16,
+          16
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.8",
+        "type": "MaxPool2d",
+        "output": [
+          1,
+          64,
+          8,
+          8
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "features.9",
+        "type": "AvgPool2d",
+        "output": [
+          1,
+          64,
+          4,
+          4
+        ],
+        "macs": 0
+      },
+      {
+        "layer": "classifier",
+        "type": "Linear",
+        "output": [
+          1,
+          3
+        ],
+        "macs": 3072
+      }
+    ]
+  },
+  "validation": null
+}

@@ -1,0 +1,54 @@
+{
+  "candidates": {
+    "grouped-control": {
+      "epochs": 25,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "seed": 42,
+      "augment": true,
+      "width": 8,
+      "augment_policy": "basic",
+      "manifest_file": "manifest_grouped.json"
+    },
+    "small-affine": {
+      "epochs": 60,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "seed": 42,
+      "augment": true,
+      "width": 8,
+      "augment_policy": "affine",
+      "manifest_file": "manifest_grouped.json"
+    },
+    "wide-affine": {
+      "epochs": 60,
+      "batch_size": 64,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "seed": 42,
+      "augment": true,
+      "width": 16,
+      "augment_policy": "affine",
+      "manifest_file": "manifest_grouped.json"
+    }
+  },
+  "selection": "validation accuracy descending, validation loss ascending, parameter count ascending",
+  "manifest_sha256": "be1b3863ffe268b9f9946892ddac594a81768fa86e27dc7862eb4e8270377746",
+  "held_out_groups": {
+    "paper": [
+      "paper02",
+      "paper04"
+    ],
+    "rock": [
+      "rock04",
+      "rock07-k03"
+    ],
+    "scissors": [
+      "scissors03",
+      "scissors04"
+    ]
+  },
+  "test_used_for_selection": false
+}

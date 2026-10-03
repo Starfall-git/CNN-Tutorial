@@ -10,15 +10,17 @@ class GrayGestureCNN(nn.Module):
     A 4x4 pooled grid retains finger location at a small parameter cost.
     """
 
-    def __init__(self, num_classes=3):
+    def __init__(self, num_classes=3, width=8):
         super().__init__()
+        if width not in (8, 16):
+            raise ValueError("Supported channel widths: 8, 16")
         self.features = nn.Sequential(
-            nn.Conv2d(1, 8, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
-            nn.Conv2d(8, 16, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
-            nn.Conv2d(16, 32, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
+            nn.Conv2d(1, width, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
+            nn.Conv2d(width, 2 * width, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
+            nn.Conv2d(2 * width, 4 * width, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
             nn.AvgPool2d(2),
         )
-        self.classifier = nn.Linear(32 * 4 * 4, num_classes)
+        self.classifier = nn.Linear(4 * width * 4 * 4, num_classes)
 
     def forward(self, x):
         return self.classifier(torch.flatten(self.features(x), 1))

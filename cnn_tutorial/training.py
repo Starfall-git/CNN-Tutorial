@@ -23,6 +23,9 @@ class TrainConfig:
     weight_decay: float = 0.0001
     seed: int = 42
     augment: bool = True
+    width: int = 8
+    augment_policy: str = "basic"
+    manifest_file: str = "manifest.json"
 
 
 def seed_everything(seed):
@@ -39,9 +42,9 @@ def seed_everything(seed):
 def make_loaders(root, config):
     # num_workers=0 works reliably in Windows Jupyter notebooks.
     generator = torch.Generator().manual_seed(config.seed)
-    train = DataLoader(GestureDataset(root, "train", config.augment),
+    train = DataLoader(GestureDataset(root, "train", config.augment, config.manifest_file, config.augment_policy),
                        batch_size=config.batch_size, shuffle=True, generator=generator, num_workers=0)
-    val = DataLoader(GestureDataset(root, "val"), batch_size=config.batch_size, num_workers=0)
+    val = DataLoader(GestureDataset(root, "val", manifest_file=config.manifest_file), batch_size=config.batch_size, num_workers=0)
     return train, val
 
 
@@ -100,12 +103,12 @@ def fit(root, run_dir, config=None):
     seed_everything(config.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     train, val = make_loaders(root, config)
-    model = GrayGestureCNN().to(device)
+    model = GrayGestureCNN(width=config.width).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, config.epochs)
     history, best_key, best_epoch = [], (-1.0, float("-inf")), 0
     started = time.perf_counter()
-    manifest_hash = sha256(Path(root) / "manifest.json")
+    manifest_hash = sha256(Path(root) / config.manifest_file)
     for epoch in range(1, config.epochs + 1):
         train_metrics = train_epoch(model, train, optimizer, device)
         val_metrics = evaluate(model, val, device)
@@ -135,11 +138,12 @@ def fit(root, run_dir, config=None):
 def test_checkpoint(root, run_dir):
     run_dir = Path(run_dir)
     checkpoint = torch.load(run_dir / "best.pt", map_location="cpu", weights_only=True)
-    if checkpoint["manifest_sha256"] != sha256(Path(root) / "manifest.json"):
+    manifest_file = checkpoint["config"].get("manifest_file", "manifest.json")
+    if checkpoint["manifest_sha256"] != sha256(Path(root) / manifest_file):
         raise ValueError("Dataset manifest changed since training")
-    model = GrayGestureCNN()
+    model = GrayGestureCNN(width=checkpoint["config"].get("width", 8))
     model.load_state_dict(checkpoint["state_dict"])
-    loader = DataLoader(GestureDataset(root, "test"), batch_size=64)
+    loader = DataLoader(GestureDataset(root, "test", manifest_file=manifest_file), batch_size=64)
     result = evaluate(model, loader, "cpu")
     result["checkpoint_sha256"] = sha256(run_dir / "best.pt")
     result["scope"] = "official synthetic RPS test; not camera/subject generalization"

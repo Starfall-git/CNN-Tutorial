@@ -1,6 +1,7 @@
 """Download provenance, deterministic splits and one preprocessing contract."""
 import hashlib
 import json
+import math
 from pathlib import Path
 import random
 import shutil
@@ -99,9 +100,9 @@ def preprocess(image):
 
 
 class GestureDataset(Dataset):
-    def __init__(self, root, split, augment=False):
+    def __init__(self, root, split, augment=False, manifest_file="manifest.json", augment_policy="basic"):
         self.root = Path(root)
-        manifest = json.loads((self.root / "manifest.json").read_text(encoding="utf-8"))
+        manifest = json.loads((self.root / manifest_file).read_text(encoding="utf-8"))
         if manifest["classes"] != list(CLASSES):
             raise ValueError("Manifest class order mismatch")
         self.rows = [row for row in manifest["rows"] if row["split"] == split]
@@ -110,6 +111,9 @@ class GestureDataset(Dataset):
         if augment and split != "train":
             raise ValueError("Augmentation is allowed only on the training split")
         self.augment = augment
+        if augment_policy not in ("basic", "affine"):
+            raise ValueError("Unknown augmentation policy")
+        self.augment_policy = augment_policy
         # Small dataset: cache decoded grayscale images, avoid repeated disk IO.
         self.images = []
         for row in self.rows:
@@ -124,6 +128,69 @@ class GestureDataset(Dataset):
         if self.augment:
             if random.random() < 0.5:
                 image = ImageOps.mirror(image)
-            image = image.rotate(random.uniform(-12, 12), resample=Image.Resampling.BILINEAR, fillcolor=255)
-            image = ImageEnhance.Brightness(image).enhance(random.uniform(0.85, 1.15))
+            if self.augment_policy == "affine":
+                image = affine_augment(image)
+                image = ImageEnhance.Contrast(image).enhance(random.uniform(0.7, 1.3))
+                image = ImageEnhance.Brightness(image).enhance(random.uniform(0.7, 1.3))
+            else:
+                image = image.rotate(random.uniform(-12, 12), resample=Image.Resampling.BILINEAR, fillcolor=255)
+                image = ImageEnhance.Brightness(image).enhance(random.uniform(0.85, 1.15))
         return torch.from_numpy(preprocess(image)), self.rows[index]["label"]
+
+
+def affine_augment(image):
+    """Inverse affine mapping: rotation +/-25deg, scale .8-1.15, shift +/-10%."""
+    angle = math.radians(random.uniform(-25, 25))
+    scale = random.uniform(0.8, 1.15)
+    shift_x, shift_y = random.uniform(-6.4, 6.4), random.uniform(-6.4, 6.4)
+    a, b = math.cos(angle) / scale, math.sin(angle) / scale
+    center_x, center_y = image.width / 2, image.height / 2
+    coefficients = (a, b, center_x - a * (center_x + shift_x) - b * (center_y + shift_y),
+                    -b, a, center_y + b * (center_x + shift_x) - a * (center_y + shift_y))
+    return image.transform(image.size, Image.Transform.AFFINE, coefficients,
+                           resample=Image.Resampling.BILINEAR, fillcolor=255)
+
+
+def create_grouped_manifest(root, seed=42, filename="manifest_grouped.json"):
+    """Hold out whole filename sequences; these are NOT verified subject IDs.
+
+    Preserve the original manifest and official test membership. Per class,
+    seven known source sequences -> five train / two validation sequences.
+    """
+    root = Path(root)
+    source = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
+    rows = [dict(row) for row in source["rows"]]
+    rng = random.Random(seed)
+    held_out = {}
+    for name in CLASSES:
+        class_rows = [r for r in rows if r["class"] == name and r["split"] != "test"]
+        for row in class_rows:
+            row["group"] = Path(row["path"]).stem.rsplit("-", 1)[0]
+        groups = sorted({r["group"] for r in class_rows})
+        if len(groups) != 7:
+            raise ValueError(f"Expected seven source sequences for {name}, got {len(groups)}")
+        rng.shuffle(groups)
+        held_out[name] = sorted(groups[:2])
+        for row in class_rows:
+            row["split"] = "val" if row["group"] in held_out[name] else "train"
+    manifest = {k: v for k, v in source.items() if k != "rows"}
+    manifest.update(seed=seed, split_policy="filename sequence holdout; not verified subjects",
+                    held_out_groups=held_out, source_manifest_sha256=sha256(root / "manifest.json"), rows=rows)
+    assert_group_separation(manifest)
+    destination = root / filename
+    serialized = json.dumps(manifest, indent=2)
+    if destination.exists() and destination.read_text(encoding="utf-8") != serialized:
+        raise FileExistsError("A different grouped manifest already exists; choose a new filename")
+    destination.write_text(serialized, encoding="utf-8")
+    return manifest
+
+
+def assert_group_separation(manifest):
+    assignments = {}
+    for row in manifest["rows"]:
+        if row["split"] == "test":
+            continue
+        key = (row["class"], row["group"])
+        if key in assignments and assignments[key] != row["split"]:
+            raise ValueError(f"Group leaks across splits: {key}")
+        assignments[key] = row["split"]

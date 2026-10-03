@@ -7,7 +7,7 @@ import numpy as np
 from PIL import Image
 import torch
 
-from cnn_tutorial.data import CLASSES, GestureDataset, preprocess
+from cnn_tutorial.data import CLASSES, GestureDataset, preprocess, create_grouped_manifest, assert_group_separation
 from cnn_tutorial.model import GrayGestureCNN, profile_model
 from cnn_tutorial.training import metrics_from_confusion
 
@@ -43,6 +43,36 @@ class Contracts(unittest.TestCase):
                 "rows": [{"split": "val", "path": "unused.png", "label": 0}]}), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "only on the training"):
                 GestureDataset(root, "val", augment=True)
+
+    def test_group_split_keeps_test_and_sequences_intact(self):
+        rows = []
+        for label, name in enumerate(CLASSES):
+            for sequence in range(7):
+                for frame in range(3):
+                    rows.append({"class": name, "label": label, "path": f"raw/{name}/{name}{sequence:02d}-{frame:03d}.png",
+                                 "split": "train", "sha256": f"fixture-{label}-{sequence}-{frame}"})
+            rows.append({"class": name, "label": label, "path": f"test/{name}.png", "split": "test", "sha256": f"test-{label}"})
+        source = {"rows": rows, "classes": list(CLASSES)}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            original = json.dumps(source)
+            (root / "manifest.json").write_text(original, encoding="utf-8")
+            grouped = create_grouped_manifest(root)
+            self.assertEqual(original, (root / "manifest.json").read_text(encoding="utf-8"))
+            self.assertEqual([r for r in rows if r["split"] == "test"],
+                             [r for r in grouped["rows"] if r["split"] == "test"])
+            self.assertEqual(grouped, create_grouped_manifest(root))
+            self.assertEqual(sum(r["split"] == "val" for r in grouped["rows"]), 18)
+            assert_group_separation(grouped)
+            leak = dict(next(r for r in grouped["rows"] if r["split"] == "val"), split="train")
+            grouped["rows"].append(leak)
+            with self.assertRaisesRegex(ValueError, "leaks"):
+                assert_group_separation(grouped)
+
+    def test_wider_model_remains_under_small_parameter_budget(self):
+        model = GrayGestureCNN(width=16)
+        self.assertEqual(tuple(model(torch.rand(2, 1, 64, 64)).shape), (2, 3))
+        self.assertLess(profile_model(model)["parameters"], 30000)
 
 
 if __name__ == "__main__":

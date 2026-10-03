@@ -1,6 +1,10 @@
 # CNN-Tutorial · 版本、约束与阶段
 
-当前版本：**v0.1.0 候选：灰度手势 CNN 教学基线**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
+当前版本：**v0.2.0：分组验证、训练优化与最终训练**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
+
+用户已确认并勾选**阶段 1**，授权在当前工作完成后合并版本并继续。阶段 2/3 的技术工作与结果已交付，清单仍等待用户确认；阶段 4 开始推进量化。
+
+最新实测：26,371 参数，官方公开基准 accuracy **95.70%**、macro-F1 **0.9563**。这是已被观察过的合成数据基准，真实摄像头、无手背景、INT8 与 FPGA FPS 仍待验证。
 
 **阶段勾选由用户确认；代理不自行勾选。** 下方保留原始需求与阶段清单。当前模型 1 已选择固定 ROI 的 64×64 灰度石头/剪刀/布分类。
 
@@ -24,9 +28,12 @@
 | 数据、训练、验证与云端流程 | [训练说明](docs/03_training/data_and_evaluation.md) |
 | 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
 | 真实实验记录 | [v0.1.0 基线](docs/05_experiments/v0.1.0_baseline.md) |
+| 分组验证与优化记录 | [v0.2.0 实验](docs/05_experiments/v0.2/README.md) |
 | GitHub 与 Code Review | [版本工作流](docs/06_workflow/versioning.md) |
 
 Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](notebooks/01_gray_gesture_cnn.ipynb) → [02 训练验证](notebooks/02_train_validate.ipynb)。
+
+优化进阶：[03 分组验证与最终训练](notebooks/03_grouped_optimization.ipynb)。默认回放真实实验记录；可切换为完整训练。
 
 ---
 
@@ -55,7 +62,7 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 
 ### 阶段性目标：
 
-- [ ] 1. 先分步尝试搭建第一个模型（选择更简单的那一个，物品识别/手势识别），搭建时参考d2l.ai教程的风格来解释，但是不要解释的过多过详细也不要太浅显。
+- [x] 1. 先分步尝试搭建第一个模型（选择更简单的那一个，物品识别/手势识别），搭建时参考d2l.ai教程的风格来解释，但是不要解释的过多过详细也不要太浅显。
 
 - [ ] 2. 训练并验证第一个模型，可以指导我使用网上平台与图片数据库（比如ultralytics的）进行训练
 
@@ -93,6 +100,13 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 |---|---|---|
 | 初始需求 | 已归档到 Git 历史 | 原始 MAIN 与本地资料边界 |
 | v0.1.0 | 候选，待用户阶段确认 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
+| v0.2.0 | 候选，待用户阶段确认 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
+
+### 后续执行约定（用户补充）
+
+- 交付时明确对应阶段编号；2026-10-04 用户确认阶段 1 并授权完成当前工作后合并。
+- 在较短用量窗口或周额度的剩余额度接近 1% 时，先保存代码、实验产物和恢复说明，再停止；额度恢复后继续。
+- 剩余额度通过应用的账号用量工具检查；不自动购买额度或消耗额外重置权益。
 
 下一步按真实采集/分组评估 → 优化候选 → INT8 回归 → 板端静态对齐 → 连续视频叠加推进。等用户提供实际 FPGA 工程后，核定器件、时钟、工具版本与剩余资源。
 

@@ -1,8 +1,8 @@
 # CNN-Tutorial · 版本、约束与阶段
 
-当前版本：**v0.3.0：全整数 INT8 转换与精度回归**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
+当前版本：**v0.4.0 开发中：RISC-V 静态固件与 FPGA 接入**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
 
-用户已确认并勾选**阶段 1**；授权合并的 PR #1/#2 均已合并。阶段 2/3 的技术工作与结果已交付，清单仍等待用户确认；本次完成**阶段 4 的桌面量化验证**，PR #3 供验收。下一步为阶段 5 的板卡工程接入。
+用户已确认并勾选**阶段 1–5**；PR #1/#2/#3 已合并，当前接入准备更新在 PR #4 和 FPGA Draft PR #20。已完成官方工具生成、手势应用交叉编译和 Overlay 模块仿真；阶段 6 的完整硬件接入、板上推理与实时叠加尚未完成。
 
 最新实测：26,371 参数，FP32 accuracy **95.70%**；全整数 INT8 accuracy **95.43%**、macro-F1 **0.9535**，模型 **33,240 字节**。量化下降 **0.27 个百分点**。这是已被观察过的合成数据基准，真实摄像头、无手背景与 FPGA FPS 仍待验证。
 
@@ -18,6 +18,7 @@
 6. 每段 notebook 代码前放 Markdown 说明，基础语法简表在末尾；Python 模块保存共享实现。
 7. `refs/` 原始厂商资料、数据、大权重和运行凭证留在本地；Git 同步代码、教程与小体积实验报告。
 8. 每个主要版本检查、commit、push、PR；阶段确认后同步 MAIN 勾选。首版保留 PR 供审阅。
+9. 2026-10-04 用户明确要求：以官方 YOLO EVSoC 的 `main.cc`、`edge_vision_soc.v`、SapphireSoC 和 TinyML Accelerator 为 AI 链路基线，与原 `example_top.v` 视频链路进行最小必要连接；推理/叠加由 UART 独立控制，AI 不得阻塞原视频。静态固件仅为接入前验证步骤。
 
 ## 文档与学习入口
 
@@ -28,6 +29,12 @@
 | 数据、训练、验证与云端流程 | [训练说明](docs/03_training/data_and_evaluation.md) |
 | 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
 | INT8 转换与 golden 回放 | [量化教程](docs/04_deployment/int8_conversion.md) |
+| FPGA 接入与独立副本 | [阶段 5 实施记录](docs/04_deployment/fpga_bringup.md) |
+| Efinity → RISC-V 开发流程 | [IP 生成、BSP、硬件编译与上板分层验证](docs/04_deployment/efinity_to_riscv_workflow.md) |
+| 官方 EVSoC 双链路集成 | [源代码映射、内存/CDC/Overlay 约束](docs/04_deployment/evsoc_dual_pipeline.md) |
+| 官方工具实际执行记录 | [模型生成及应用编译](docs/05_experiments/v0.5/README.md)、[Notebook 06](notebooks/06_official_evsoc_workflow.ipynb) |
+| RISC-V 静态固件 | [构建与关键源码](docs/04_deployment/riscv_static_firmware.md) |
+| 自定义指令与缓存 | [CI 接口约定](docs/04_deployment/riscv_custom_instruction.md) |
 | 真实实验记录 | [v0.1.0 基线](docs/05_experiments/v0.1.0_baseline.md) |
 | 分组验证与优化记录 | [v0.2.0 实验](docs/05_experiments/v0.2/README.md) |
 | 全整数精度与算子审计 | [v0.3.0 实验](docs/05_experiments/v0.3/README.md) |
@@ -46,6 +53,7 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 > 可以链接到.\docs\下的markdown文件去。
 
 ## 项目介绍与要求
+
 ### 项目主文件夹地址：C:\Users\SteLl1a\Desktop\CNN-Tutorial。
 
 ### 主要任务：
@@ -68,12 +76,12 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 
 - [x] 1. 先分步尝试搭建第一个模型（选择更简单的那一个，物品识别/手势识别），搭建时参考d2l.ai教程的风格来解释，但是不要解释的过多过详细也不要太浅显。
 
-- [ ] 2. 训练并验证第一个模型，可以指导我使用网上平台与图片数据库（比如ultralytics的）进行训练
+- [x] 2. 训练并验证第一个模型，可以指导我使用网上平台与图片数据库（比如ultralytics的）进行训练
 
-- [ ] 3. 优化模型（结构/框架/训练），迭代模型。
+- [x] 3. 优化模型（结构/框架/训练），迭代模型。
 
-- [ ] 4. 模型量化，转INT8等。
-- [ ] 5. 我将提供我们现在已完成的基于易灵思FPGA板卡的摄像头-DDR3-串口-上位机控制-图像处理（sobel边缘检测等）-HDMI输出的边缘检测图像处理系统的工程文件，里面包含板卡信息、所有开发调试记录、源码、工程文件等。根据tinyml用户手册，和我一起，step-by-step，尝试部署到板子上。模型的训练图片不需要经过边缘处理（网上这种训练数据库较少），可以是黑白的/彩色的。我们可以将神经网络的物品识别或手势识别其作为sobel边缘检测与显示系统之外的一项功能，即不用sobel边缘检测，原图采样直接进行推理。目前工程里我们的摄像头是黑白的720p的AR0135，我们也可以替换为OV5640彩色摄像头（可以到1080p），或mipi接口的其他彩色摄像头。关于具体选择黑白还是彩色的图片来训练和推理，可以提供给我们建议，我们根据建议来选择摄像头并修改图像处理系统，来保证神经网络模型的部署。
+- [x] 4. 模型量化，转INT8等。
+- [x] 5. 我将提供我们现在已完成的基于易灵思FPGA板卡的摄像头-DDR3-串口-上位机控制-图像处理（sobel边缘检测等）-HDMI输出的边缘检测图像处理系统的工程文件，里面包含板卡信息、所有开发调试记录、源码、工程文件等。根据tinyml用户手册，和我一起，step-by-step，尝试部署到板子上。模型的训练图片不需要经过边缘处理（网上这种训练数据库较少），可以是黑白的/彩色的。我们可以将神经网络的物品识别或手势识别其作为sobel边缘检测与显示系统之外的一项功能，即不用sobel边缘检测，原图采样直接进行推理。目前工程里我们的摄像头是黑白的720p的AR0135，我们也可以替换为OV5640彩色摄像头（可以到1080p），或mipi接口的其他彩色摄像头。关于具体选择黑白还是彩色的图片来训练和推理，可以提供给我们建议，我们根据建议来选择摄像头并修改图像处理系统，来保证神经网络模型的部署。
 - [ ] 6. 模型成功部署到FPGA板卡，并能实时推理与原画（或经过边缘处理的图像）叠加显示。
 
 - [ ] 7. 尝试搭建第二个模型。
@@ -105,7 +113,7 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 | 初始需求 | 已归档到 Git 历史 | 原始 MAIN 与本地资料边界 |
 | v0.1.0 | 阶段 1 已确认，PR #1 已合并 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
 | v0.2.0 | PR #2 已按用户授权合并；阶段 2/3 待勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
-| v0.3.0 | 阶段 4 桌面量化验证通过；PR #3 待验收 | [INT8 精度回归、图审计与 golden vectors](docs/05_experiments/v0.3/README.md) |
+| v0.3.0 | 阶段 4 桌面量化验证通过；PR #3 已合并 | [INT8 精度回归、图审计与 golden vectors](docs/05_experiments/v0.3/README.md) |
 
 ### 后续执行约定（用户补充）
 
@@ -113,8 +121,13 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 - 在较短用量窗口或周额度的剩余额度接近 1% 时，先保存代码、实验产物和恢复说明，再停止；额度恢复后继续。
 - 剩余额度通过应用的账号用量工具检查；不自动购买额度或消耗额外重置权益。
 
-下一步按真实采集/分组评估 → 优化候选 → INT8 回归 → 板端静态对齐 → 连续视频叠加推进。等用户提供实际 FPGA 工程后，核定器件、时钟、工具版本与剩余资源。
+阶段 5 已收到 FPGA 工程，按用户要求从 GitHub 克隆到桌面 `CNN-Tutorial-FPGA`，禁止修改原 `fpga-w.-codex`。已完成工程核对和 RAW8 接口仿真，后续推进板端静态对齐、输入缩放和连续视频叠加；详见阶段 5 实施记录。
 
 
 
 
+阶段 5.3：108 个翻译单元已编译、链接为 RISC-V ELF。教学入口：[05 静态固件](notebooks/05_riscv_static_bringup.ipynb)。未进行硬件下载，目标输出、arena 和 FPS 待测；原 FPGA 目录保持只读。
+
+| 开发版本 | 状态 | 交付 |
+|---|---|---|
+| v0.4.0 | 阶段 5.3 静态交叉编译通过，待目标运行 | [PR #4](https://github.com/Starfall-git/CNN-Tutorial/pull/4)、[FPGA Draft #20](https://github.com/Starfall-git/fpga-w.-codex/pull/20) |

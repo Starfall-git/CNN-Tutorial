@@ -1,0 +1,32 @@
+{
+  "compiler": "riscv-none-elf-g++.exe (xPack GNU RISC-V Embedded GCC x86_64) 13.4.0",
+  "isa": "rv32im_zicsr_zifencei",
+  "abi": "ilp32",
+  "units": 108,
+  "model_sha256": "7891518a9b70ec6b3be8649123651780ce87ede1e69a9a49c394c17d203a0baa",
+  "elf_sha256": "3d65ae1f03ec620c9cab6afa06ca81399e36242dd5bbd3fd930ae49d666ca0d4",
+  "linker_sha256": "dada0be72927c20f78817a6e256072ea966e52cd1a7da03fc2706dc50e2ceff2",
+  "bsp": "C:\\Users\\SteLl1a\\Desktop\\Work\\FPGA Contest\\demo\\tinyml-main\\tinyml_hello_world\\Ti60F225_tinyml_helloworld\\embedded_sw\\sapphire_soc_tinyml\\bsp\\efinix\\EfxSapphireSoc",
+  "runtime": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial\\refs\\TinyML\\upstream-2026.1\\tinyml_hello_world\\Ti60F225_tinyml_hello_world\\embedded_sw\\SapphireSoc",
+  "size_output": "   text\t   data\t    bss\t    dec\t    hex\tfilename\n  92992\t  58686\t2359928\t2511606\t 2652f6\tcnn_static.elf\n",
+  "build_script_sha256": "99e2fbe361fdf7ace5d1166e40bf642b51f2d5064166f04bc230e88aabb8a159",
+  "source_manifest_sha256": "d8cbe0f56866ab21859bee11295f4a0200d13750aac68389f615f1b199e821c4",
+  "firmware_sha256": "45dca0c5acf36f06e0a456a7a1acd7bd46698272a06a9722d6197a282bb58daa",
+  "tinyml_library_sha256": "90f16b0162d587d7bc1f78b0a1e5e32d23fdb438ebfc74243381222237192452",
+  "link_warnings": [
+    "closer.c:(.text._close_r+0x1c): warning: _close is not implemented and will always fail",
+    "fstatr.c:(.text._fstat_r+0x24): warning: _fstat is not implemented and will always fail",
+    "signalr.c:(.text._getpid_r+0x0): warning: _getpid is not implemented and will always fail",
+    "isattyr.c:(.text._isatty_r+0x1c): warning: _isatty is not implemented and will always fail",
+    "signalr.c:(.text._kill_r+0x24): warning: _kill is not implemented and will always fail",
+    "lseekr.c:(.text._lseek_r+0x28): warning: _lseek is not implemented and will always fail",
+    "readr.c:(.text._read_r+0x28): warning: _read is not implemented and will always fail",
+    "writer.c:(.text._write_r+0x28): warning: _write is not implemented and will always fail",
+    "C:/Users/SteLl1a/Desktop/Work/FPGA Contest/env/RISCV-IDE/toolchain/bin/../lib/gcc/riscv-none-elf/13.4.0/../../../../riscv-none-elf/bin/ld.exe: warning: cnn_static.elf has a LOAD segment with RWX permissions"
+  ],
+  "arena_ceiling_bytes": 262144,
+  "arena_used_bytes": null,
+  "target_run_verified": false,
+  "video_integration_compatible": false,
+  "warning": "Vendor static BSP at 0x1000 overlaps video slots; never use in video system as-is"
+}

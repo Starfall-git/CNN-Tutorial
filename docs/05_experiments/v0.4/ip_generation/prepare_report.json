@@ -1,0 +1,26 @@
+{
+  "vendor": "C:\\Users\\SteLl1a\\Desktop\\Work\\FPGA_Contest\\demo\\tinyml-main\\tinyml_hello_world\\Ti60F225_tinyml_helloworld",
+  "official_settings": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial\\refs\\TinyML\\upstream-2026.1\\tinyml_hello_world\\Ti60F225_tinyml_hello_world\\ip\\SapphireSoc\\settings.json",
+  "official_settings_sha256": "0dded91584c68598527be221e8e8e544972cc98e04f109c21ed4b66fe5cf880b",
+  "overrides": {
+    "DEVKIT": "0",
+    "Frequency": "100",
+    "PeriFrequency": "100",
+    "DDR_AXI4": "1'b1",
+    "DDRCLK_DOMAIN": "1",
+    "DDR_OPT": "1",
+    "GPIO0": "1'b0",
+    "I2C0": "1'b0",
+    "APBSlave1": "1'b0",
+    "DEVKIT_CUSTOM": "\"Single RS232-HS\"",
+    "DDRSize": "32'd268435456",
+    "LDSize": "131068",
+    "HexFile_PathEnable": "1'b0",
+    "HexFile_Path": "\"''\""
+  },
+  "timing_model": "C4",
+  "cpu_clock_mhz": 100,
+  "hardware_compiled": false,
+  "programmed": false,
+  "note": "Candidate only: old DDR3 wrapper/RTL ports and SDC still require validation"
+}

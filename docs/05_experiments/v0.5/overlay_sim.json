@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "pixels": 1728,
+  "frames": 9,
+  "width": 16,
+  "height": 12,
+  "source_clock_ns": 14,
+  "pixel_clock_ns": 10,
+  "hardware_integrated": false,
+  "physical_cdc_verified": false,
+  "sha256": {
+    "src/cnn/cnn_result_mailbox.v": "87b9fd408076cb1246d77748e436f919d2166f49efe8ba6ddda6922712f34ddd",
+    "src/cnn/cnn_video_overlay.v": "888220020227ba17da56e5aa7d946d57871249d2246ffa037faec9bae255855f",
+    "src/cnn/cnn_overlay_bridge.v": "67d43d8d125650ec3200c919ba175c350ae9732a5d4c6647791f5d101c518bac",
+    "testbench/cnn_overlay_tb.sv": "c7f254816a73d5a0ebfdb397029cd7b689d627f32d29e4c6f3abb6b4935b1c8d"
+  },
+  "log_sha256": "037c9e277c1d5ac7b4c7bca90e8ff2a544ac10573e63ab28c22c035dcdee8ac7"
+}

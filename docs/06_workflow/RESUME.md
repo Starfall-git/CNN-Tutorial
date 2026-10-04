@@ -1,5 +1,16 @@
 # 恢复工作记录
 
+## 2026-10-05 最新：真实视频工程96MHz Sapphire生成成功，额度保存
+
+FPGA提交06b1b668已推送Draft #20。候选目录 artifacts/evsoc-system-r1 从独立副本的实际视频顶层/XML/peri/DDR IP准备，官方source保持原内容。已确认 example_top 的 w_ddr3_ui_clk=clk_sys=96MHz，不是DDR物理时钟。官方IPM API生成Sapphire成功、exit0，session87651已结束，无需等待或重启。RTL/模板/匹配BSP及日志哈希见 docs/05_experiments/v0.5/sapphire_system_generation.json。
+
+配置：CPU/peripheral96MHz、128位combined DDR、APB0禁用/APB1启用，原自定义指令保留；DDR逻辑窗口64MiB。计划AI物理64–128MiB，保护低48MiB视频区，但地址转换尚未实现，不能直接下载当前软件或称为整机可运行。原DdrCtrl行列/物理时钟未改，候选XML只登记了Sapphire，example_top尚未实例化。
+
+下一步必须核对模板与官方edge_vision_soc实例，实施Sapphire/TinyML子系统、CPU和加速器一致地址转换、受限DDR仲裁、ID返回及APB endpoint接线，再做RAW8预处理/坐标映射。不要再退回旧静态r3路线或重复生成同一IP。教程PR7上轮6c0e813 CI成功。此前任何“IP生成正在运行”已失效。
+
+短时额度到95%时开始保存，继续前重新查询；用户要求接近1%剩余即暂停。原fpga-w.-codex只读，副本outflow/Ti60_AR0135.tcl.out用户修改保留。阶段6未完成，无新下载，无板上FPS/arena结果。
+
+
 ## 2026-10-05 最新：UART与结果/Overlay端点已组合验证
 
 FPGA最新提交07597651已推送Draft #20。UART CNN_ENABLE默认为0，新50/51命令与cnn_video_endpoint在三时钟组合仿真通过；cpu推理开关和pixel叠加独立，ACK来自实际Overlay enabled寄存器。APB 0x24可读推理允许/online。主机SerialClient已有get_cnn/set_cnn，GUI按钮尚未做。29项host测试、123组几何数据包、旧UART/Overlay/APB回归通过；详见docs/05_experiments/v0.5/uart_endpoint.md与报告。

@@ -12,7 +12,7 @@
 
 ## 阶段 4 本轮完成
 
-- 当前工作分支 `feat/v0.3-int8-export`，从已合并 main 开始。
+- 阶段 4 工作分支为 `feat/v0.3-int8-export`，该 PR 已合并；当前分支见文末 v0.4 记录。
 - 独立环境 `CNN-Tutorial-Quant`：Python 3.11.16、TensorFlow 2.15.1、NumPy 1.26.4 已安装，`pip check` 通过。原训练环境保持 PyTorch CUDA。
 - `scripts/prepare_conversion.py` 已实际运行，生成 `artifacts/v0.3-conversion-input/`。
 - `weights.npz` 是冻结权重；`calibration.npz` 为训练池中每类 100 张，共 300 张；`evaluation.npz` 为 372 张官方测试图、标签与 PyTorch logits。校准/评估内容哈希不交叉。
@@ -27,7 +27,7 @@
 
 1. 先检查账号用量；用户要求额度恢复再继续，不购买额外额度、不消耗重置权益。
 2. 核对 git 状态、当前分支、PR 和本地 artifacts；不要重复下载数据或重训已经冻结的模型。
-3. 核对本轮 PR #3 的最新提交、CI 和阶段确认。按用户约定处理确认后的合并，不自行勾选阶段。
+3. 核对新 PR #4 的最新提交、CI 和阶段确认（PR #3 已合并）。按用户约定处理确认后的合并，不自行勾选阶段。
 4. 阶段 5 已收到工程：用户禁止修改 `C:/Users/SteLl1a/Desktop/fpga-w.-codex`。已从远端新克隆到 `C:/Users/SteLl1a/Desktop/CNN-Tutorial-FPGA`，基线 `51f7e55f8ce8614f2801f93e5af9bd7bc2c91c01`，分支 `feat/cnn-tinyml-bringup`。原目录未提交改动不复制、不触碰。
 5. 先用 golden 输入对齐目标 runtime 的输出字节/argmax，测 arena，再接 64×64 灰度 ROI。相机数据位深、黑电平、resize 坐标和舍入需明确对齐。
 6. 阶段 6 实测连续视频、HDMI 叠加与端到端 FPS；阶段 7 第二模型保持用户给出的后续顺序。整个目标尚未完成。
@@ -63,3 +63,6 @@
 - 下一步：匹配本板 C4、DDR3 和引脚的独立 Sapphire 硬件/BSP。当前 ELF 从 0x1000 开始，不能直接载入视频系统。先拿到静态 UART golden/arena/cycles，再进行 CI 加速和视频地址分区。没有烧写设备、没有硬件运行成绩。
 
 - 已同步：CNN-Tutorial PR #4 https://github.com/Starfall-git/CNN-Tutorial/pull/4；FPGA Draft PR #20 固件提交 `1d7a905a00cf8e0c0403587f89d45e0e73d67df8`。Notebook 05 实际执行、10 项测试、格式/链接及视频配置检查通过。Code Review 本轮仍连接失败；CI 以新 PR 最新 SHA 为准。
+
+- PR #4 提交 `74a53d726a4641463a206db1a8f45f349307e48c` 的 GitHub Actions run 37175072197 已成功。之后的文档补充须按最新 SHA 核对 CI。
+- 阶段 5.4 已核对 UART/晶振 GPIO，并记录 C4/I3、96/300 MHz、DDR row=16/14 等差异；详见 hardware_preflight.md。未修改控制器参数。Win32_SerialPort 和按常见名称筛选的 PnP 查询未发现设备，已异步询问板卡连接状态，等待用户回答；未进行任何硬件下载。

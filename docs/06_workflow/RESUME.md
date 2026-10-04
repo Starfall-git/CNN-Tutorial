@@ -37,15 +37,27 @@
 - 工程确认 Ti60F225、C4、Efinity 2026.1.132.3.9；没有 Sapphire/TinyML。DDR 12×4MiB 槽占低 48MiB，新增内存必须避开并设计仲裁。
 - FPGA 副本新增 `ar0135_capture.gray8` 与顶层 `cnn_raw_gray8`；尚无下游消费者。ModelSim 修改前后两帧 720p 回归通过，1,843,200 像素的 RAW8 和旧 RGB565 对齐；视频配置检查通过。
 - 正常仿真工具 `D:/WORK/modelsim/win64`；Intel Edition 另一安装许可证失败，不再重试其许可证。
-- `scripts/export_board_bundle.py` 已生成本地 `artifacts/v0.3-board-bundle/`。C++11 数据数组与原始模型/golden bytes 同包，哈希校验；新增往返/损坏拒绝测试，现共 10 项测试通过。目标 C++ 编译尚未验证。
+- `scripts/export_board_bundle.py` 已生成本地 `artifacts/v0.3-board-bundle/`。C++11 数据数组与原始模型/golden bytes 同包，哈希校验；新增往返/损坏拒绝测试，现共 10 项测试通过。目标 C++ 数据和静态固件交叉编译已完成，见下面的新进展。
 - Efinity 路径 `C:/Users/SteLl1a/Desktop/Work/FPGA Contest/env/Efinity IDE/2026.1/bin`（用户确认）；未在此发现 RISC-V GCC/G++/Eclipse/OpenOCD，只有运行库 DLL，勿误称具备交叉工具链。
 - 本地 DDR3 TinyML 示例位于 `C:/Users/SteLl1a/Desktop/Work/FPGA Contest/demo/tinyml-main/tinyml_hello_world/Ti60F225_tinyml_helloworld`，已有 Sapphire/BSP，版本 2025.1.110.1.5、I3。下一步先读其 RTL/BSP 与当前 DDR/IP 差异；只读参考，移植到新工作副本。
 - 官方新版已固定克隆在 `refs/TinyML/upstream-2026.1`，commit `96886fa0c73e25e6218db7d0863f84677cf65138`；长路径 checkout 已通过 local core.longpaths 与 sparse checkout 修复，状态干净。不要重下全部源码。
 - 详细记录 `docs/04_deployment/fpga_bringup.md`，FPGA 副本内为 `docs/CNN_TINYML_BRINGUP.md`。
-- 本轮短期额度到 9% 时开始保存提交与 PR；按用户要求接近耗尽时暂停，不消耗重置权益。恢复时检查两个仓库的 PR 与 HEAD。
+- 前次曾在短期额度 9% 时保存；本轮已恢复。继续在接近 1% 前保存并停止，不消耗重置权益。
 
 ## 其他状态
 
 - Code Review 插件仍返回无法连接 GitHub；GitHub 连接器可正常读写、查询 CI。不得声称插件审查通过。
 - Jupyter 服务在本机 8889；已有 d2l 服务在 8888，保持不动。暂停前没有仍在运行的训练或依赖安装任务。
 - Notebook 00 的 kernel 名称由 Jupyter 保存为小写 `cnn-tutorial`，已保留该变更。
+
+## 2026-10-04 RISC-V 路径补充后的新进展
+
+- 用户给出 `Work/FPGA Contest/env/RISCV-IDE`，GCC/G++ 实测 13.4.0；不再重复询问工具链位置。
+- 实时核对发现 PR #3 已合并，远端 main `a3ac752fc7cc0d57220d714a4fd26acf572e9728`。先前补充提交 32c1423 在合并之后，故已从 main 建 `feat/v0.4-fpga-static` 并 cherry-pick 为 8e8e783，后续使用新 PR，不能再向已合并 PR #3 追加代码。
+- FPGA 副本分支仍 `feat/cnn-tinyml-bringup`，Draft PR #20。新增 `firmware/cnn_static/main.cc` 与 `tools/build_cnn_static.py`。
+- 当前成功构建在 FPGA 副本 `artifacts/cnn-static-2026-r5/`；模型哈希未变，108 units、ELF32 RV32IM/ilp32。报告和 ELF 属性在训练仓库 `docs/05_experiments/v0.4/`。
+- 构建只读取本地旧 DDR3 BSP 和官方 2026 runtime，复制依赖后编译；源码逐文件哈希在本地 `input_hashes.json`。旧 runtime 头文件不完整，勿退回旧 runtime。
+- 编译器的 C++ 标准库与 `-ffreestanding` 组合会失败，此构建使用正常 C++11 编译、厂商裸机启动和 nosys 链接。局部解释器对象避免静态析构注册引入缺失的 `__dso_handle`。
+- UART 初始化与模型 SHA 日志已补齐；256 KiB arena 仅容量，2 MiB 默认栈不是模型大小。nosys/RWX 警告保留在报告。
+- 三份用户 PDF 已读取并渲染关键页；解释在 `riscv_custom_instruction.md`，构建解释在 `riscv_static_firmware.md`，Notebook 05 提供报告回放。
+- 下一步：匹配本板 C4、DDR3 和引脚的独立 Sapphire 硬件/BSP。当前 ELF 从 0x1000 开始，不能直接载入视频系统。先拿到静态 UART golden/arena/cycles，再进行 CI 加速和视频地址分区。没有烧写设备、没有硬件运行成绩。

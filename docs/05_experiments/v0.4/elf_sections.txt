@@ -1,0 +1,32 @@
+There are 23 section headers, starting at offset 0x3b289c:
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .init             PROGBITS        00001000 001000 000070 00  AX  0   0  1
+  [ 2] .text             PROGBITS        00001070 001070 016ad0 00  AX  0   0  4
+  [ 3] .init_array       INIT_ARRAY      00017b40 017b40 000048 04  WA  0   0  4
+  [ 4] .fini_array       FINI_ARRAY      00017b88 017b88 000004 04  WA  0   0  4
+  [ 5] .data             PROGBITS        00017b90 017b90 00e4f2 00  WA  0   0 16
+  [ 6] .bss              NOBITS          00026090 026082 040278 00  WA  0   0 16
+  [ 7] .stack            NOBITS          00066310 026082 200000 00  WA  0   0 16
+  [ 8] .debug_info       PROGBITS        00000000 026082 2287c0 00      0   0  1
+  [ 9] .debug_abbrev     PROGBITS        00000000 24e842 013ad8 00      0   0  1
+  [10] .debug_aranges    PROGBITS        00000000 262320 0010d8 00      0   0  8
+  [11] .debug_line       PROGBITS        00000000 2633f8 03cd01 00      0   0  1
+  [12] .debug_str        PROGBITS        00000000 2a00f9 0b3eb2 01  MS  0   0  1
+  [13] .debug_line_str   PROGBITS        00000000 353fab 002815 01  MS  0   0  1
+  [14] .comment          PROGBITS        00000000 3567c0 000033 01  MS  0   0  1
+  [15] .riscv.attributes RISCV_ATTRIBUTE 00000000 3567f3 000043 00      0   0  1
+  [16] .debug_loclists   PROGBITS        00000000 356836 03bb74 00      0   0  1
+  [17] .debug_rnglists   PROGBITS        00000000 3923aa 008df4 00      0   0  1
+  [18] .debug_frame      PROGBITS        00000000 39b1a0 003d48 00      0   0  4
+  [19] .debug_macro      PROGBITS        00000000 39eee8 006176 00      0   0  1
+  [20] .symtab           SYMTAB          00000000 3a5060 009740 10     21 2075  4
+  [21] .strtab           STRTAB          00000000 3ae7a0 004006 00      0   0  1
+  [22] .shstrtab         STRTAB          00000000 3b27a6 0000f6 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), p (processor specific)

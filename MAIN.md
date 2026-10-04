@@ -1,8 +1,8 @@
 # CNN-Tutorial · 版本、约束与阶段
 
-当前版本：**v0.3.0：全整数 INT8 转换与精度回归**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
+当前版本：**v0.4.0 开发中：RISC-V 静态固件与 FPGA 接入**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
 
-用户已确认并勾选**阶段 1**；授权合并的 PR #1/#2 均已合并。阶段 2/3 的技术工作与结果已交付，清单仍等待用户确认；本次完成**阶段 4 的桌面量化验证**，PR #3 供验收。下一步为阶段 5 的板卡工程接入。
+用户已确认并勾选**阶段 1**；授权合并的 PR #1/#2 均已合并。阶段 2/3 的技术工作与结果已交付，清单仍等待用户确认；阶段 4 的桌面量化验证已完成，PR #3 已合并。当前完成阶段 5.3 的静态固件交叉编译，尚未完成上板运行。
 
 最新实测：26,371 参数，FP32 accuracy **95.70%**；全整数 INT8 accuracy **95.43%**、macro-F1 **0.9535**，模型 **33,240 字节**。量化下降 **0.27 个百分点**。这是已被观察过的合成数据基准，真实摄像头、无手背景与 FPGA FPS 仍待验证。
 
@@ -29,6 +29,8 @@
 | 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
 | INT8 转换与 golden 回放 | [量化教程](docs/04_deployment/int8_conversion.md) |
 | FPGA 接入与独立副本 | [阶段 5 实施记录](docs/04_deployment/fpga_bringup.md) |
+| RISC-V 静态固件 | [构建与关键源码](docs/04_deployment/riscv_static_firmware.md) |
+| 自定义指令与缓存 | [CI 接口约定](docs/04_deployment/riscv_custom_instruction.md) |
 | 真实实验记录 | [v0.1.0 基线](docs/05_experiments/v0.1.0_baseline.md) |
 | 分组验证与优化记录 | [v0.2.0 实验](docs/05_experiments/v0.2/README.md) |
 | 全整数精度与算子审计 | [v0.3.0 实验](docs/05_experiments/v0.3/README.md) |
@@ -106,7 +108,7 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 | 初始需求 | 已归档到 Git 历史 | 原始 MAIN 与本地资料边界 |
 | v0.1.0 | 阶段 1 已确认，PR #1 已合并 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
 | v0.2.0 | PR #2 已按用户授权合并；阶段 2/3 待勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
-| v0.3.0 | 阶段 4 桌面量化验证通过；PR #3 待验收 | [INT8 精度回归、图审计与 golden vectors](docs/05_experiments/v0.3/README.md) |
+| v0.3.0 | 阶段 4 桌面量化验证通过；PR #3 已合并 | [INT8 精度回归、图审计与 golden vectors](docs/05_experiments/v0.3/README.md) |
 
 ### 后续执行约定（用户补充）
 
@@ -118,3 +120,5 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 
 
 
+
+阶段 5.3：108 个翻译单元已编译、链接为 RISC-V ELF。教学入口：[05 静态固件](notebooks/05_riscv_static_bringup.ipynb)。未进行硬件下载，目标输出、arena 和 FPS 待测；原 FPGA 目录保持只读。

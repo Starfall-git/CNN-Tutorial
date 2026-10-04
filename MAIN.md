@@ -29,6 +29,7 @@
 | 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
 | INT8 转换与 golden 回放 | [量化教程](docs/04_deployment/int8_conversion.md) |
 | FPGA 接入与独立副本 | [阶段 5 实施记录](docs/04_deployment/fpga_bringup.md) |
+| Efinity → RISC-V 开发流程 | [IP 生成、BSP、硬件编译与上板分层验证](docs/04_deployment/efinity_to_riscv_workflow.md) |
 | RISC-V 静态固件 | [构建与关键源码](docs/04_deployment/riscv_static_firmware.md) |
 | 自定义指令与缓存 | [CI 接口约定](docs/04_deployment/riscv_custom_instruction.md) |
 | 真实实验记录 | [v0.1.0 基线](docs/05_experiments/v0.1.0_baseline.md) |

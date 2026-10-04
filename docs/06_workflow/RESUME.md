@@ -1,5 +1,29 @@
 # 恢复工作记录
 
+## 最新：r3 IP 生成完成，硬件编译正在运行
+
+2026-10-04 本轮已实际完成独立 r3 的 Sapphire RTL/BSP 生成（exit 0），不是板上验收。FPGA 工具提交 `3a6519e5` 已推送现有分支 / PR #20。
+
+- 目录：`C:/Users/SteLl1a/Desktop/CNN-Tutorial-FPGA/artifacts/hardware-static-r3`。
+- 修复：完整 AXI4，关闭未连接 APBSlave1，连接 CPU BRESP，未用 SPI 输入和 userInterruptB 置零；FT232H 配置独立保存为 `openocd/cnn_ft232h_ti.cfg`，0403:6014/channel 0。所有生成脚本语法检查通过；r3 实际生成和适配成功。
+- 硬件完整 Compile 已启动：终端 session `17895`；最近确认 `efx_map.exe` PID `33828`、控制 Python PID `25784` 活跃。先查询该 session / 进程及 `compile.log`、`outflow/`。结束时 wrapper 会写 `compile.exitcode`。不能仅因日志暂空而重启，也不能把 r3 当作通过或可下载。
+- IP 参数及调试配置摘要归档 `docs/05_experiments/v0.4/ip_generation/`。新生成 BSP 固件的成功报告仍对应 r2：`artifacts/cnn-static-generated-bsp-r1/build_report.json`。r3 BSP 后续需重新编译固件。
+- 待办：核对所有 IP/综合诊断、布局布线与时序、引脚和 DDR 参数；通过后才下载本板候选 bitstream，然后完成 UART/DDR/三组 INT8 golden 分层验证。还没有板上 golden、arena 或 FPS 数据。
+- 本轮开始保存时短时额度已用 91%。继续前先查询额度；不购买或使用重置权益。原 FPGA 工程不修改，副本用户 outflow 改动保留。
+
+## 2026-10-04 最新接续点：用户要求 Astra / Medium
+
+用户要求后续使用 GPT-6 Astra、中等推理强度。当前工具没有直接切换本对话模型的接口；不能声称已经切换。工程未完成，下一轮从以下状态继续，不重复训练或生成已验证产物。
+
+- 阶段 5：独立静态工程准备中，尚未完成板上推理。已生成 `CNN-Tutorial-FPGA/artifacts/hardware-static-r2` 的 Sapphire 3.4.0 RTL/BSP，完整 AXI4、100 MHz、C4。r1 是合并地址通道的历史探测，不用于硬件编译。
+- 新 BSP 固件构建在 FPGA 副本 `artifacts/cnn-static-generated-bsp-r1` 成功，108 编译单元；ELF SHA-256 `2c52655d4b4ad169f6ca141f70e7dfa71961ff21da47dcf503f3d304f0a9cb0c`。仅证明编译链接，不代表上板通过。
+- JTAG 已读到 1 颗 Ti60，IDCODE `0x10660a79`；链文件在 `artifacts/hardware-static-r1/detected_chain.jcf`。FTDI `ftdi://0x0403:0x6014:2:1b/1`（重新连接后可能变化）。没有下载 bitstream/ELF，没有写 Flash，没有打开 UART。
+- 下一步审核 `tools/prepare_cnn_hardware.py`：官方配置 APBSlave1 启用但旧 DDR3 wrapper 未接，考虑显式禁用后生成 r3；核对 DDR BRESP 输入连接、TAP_COUNT 和 DEVKIT_CUSTOM 调试参数。soft JTAG 未启用，不能把条件编译分支误报为接口缺失。新 BSP 未找到旧版 config 目录，教程应按实际目录修订。
+- 新增未提交：FPGA 副本 `tools/prepare_cnn_hardware.py`、`tools/generate_cnn_sapphire.py`；教程仓库 `docs/04_deployment/efinity_to_riscv_workflow.md`。整理验证证据后提交、推送并更新现有 PR #4 / FPGA PR #20。
+- FPGA 副本 `outflow/Ti60_AR0135.tcl.out` 是用户工具产生的改动，保留，不纳入本次提交。用户另有桌面 tinyml-main 官方工程的 Efinity 编译，勿停止它。
+- 工具路径已经改为下划线：`C:/Users/SteLl1a/Desktop/Work/FPGA_Contest/env/Efinity_IDE/2026.1` 和同级 `RISCV-IDE`；旧 DDR3 参考在 `FPGA_Contest/demo/tinyml-main/tinyml_hello_world/Ti60F225_tinyml_helloworld`。历史报告路径不回写；新文档和 notebook 运行入口应更新。
+- 本次接续前用量读取：5 小时额度已用 73%，周额度已用 58%。继续前重新查询，按用户要求接近 1% 剩余额度时保存停止。
+
 2026-10-04：用户恢复执行后额度已恢复，阶段 4 的桌面量化验证已完成。后续交付继续明确阶段编号，接近额度阈值先保存再停止。
 
 ## 已完成并合并

@@ -1,0 +1,8 @@
+{
+  "source_sha256": "f65154532dd98aa5851b524a7d956a46235ec40c6986b085578abb1090e1ef39",
+  "adapter_sha256": "c45b81cef6c1b76539313b2d2bd573a9f06a8098f039e0afa18f33f12ce38080",
+  "vid_pid": "0403:6014",
+  "channel": 0,
+  "target_id": "0x10660a79",
+  "board_programmed": false
+}

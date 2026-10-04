@@ -28,21 +28,9 @@
 1. 先检查账号用量；用户要求额度恢复再继续，不购买额外额度、不消耗重置权益。
 2. 核对 git 状态、当前分支、PR 和本地 artifacts；不要重复下载数据或重训已经冻结的模型。
 3. 核对本轮 PR #3 的最新提交、CI 和阶段确认。按用户约定处理确认后的合并，不自行勾选阶段。
-4. 阶段 5 已收到工程：用户禁止修改 `C:/Users/SteLl1a/Desktop/fpga-w.-codex`。已从远端新克隆到 `C:/Users/SteLl1a/Desktop/CNN-Tutorial-FPGA`，基线 `51f7e55f8ce8614f2801f93e5af9bd7bc2c91c01`，分支 `feat/cnn-tinyml-bringup`。原目录未提交改动不复制、不触碰。
+4. 下一步是阶段 5。已请求用户提供 FPGA 工程路径、准确器件与 Efinity/RISC-V IDE 版本；收到工程后核查 AXI/DDR、时钟、资源、TFLite Micro 版本与算子注册。
 5. 先用 golden 输入对齐目标 runtime 的输出字节/argmax，测 arena，再接 64×64 灰度 ROI。相机数据位深、黑电平、resize 坐标和舍入需明确对齐。
 6. 阶段 6 实测连续视频、HDMI 叠加与端到端 FPS；阶段 7 第二模型保持用户给出的后续顺序。整个目标尚未完成。
-
-## 阶段 5 当前进度与恢复入口
-
-- 工程确认 Ti60F225、C4、Efinity 2026.1.132.3.9；没有 Sapphire/TinyML。DDR 12×4MiB 槽占低 48MiB，新增内存必须避开并设计仲裁。
-- FPGA 副本新增 `ar0135_capture.gray8` 与顶层 `cnn_raw_gray8`；尚无下游消费者。ModelSim 修改前后两帧 720p 回归通过，1,843,200 像素的 RAW8 和旧 RGB565 对齐；视频配置检查通过。
-- 正常仿真工具 `D:/WORK/modelsim/win64`；Intel Edition 另一安装许可证失败，不再重试其许可证。
-- `scripts/export_board_bundle.py` 已生成本地 `artifacts/v0.3-board-bundle/`。C++11 数据数组与原始模型/golden bytes 同包，哈希校验；新增往返/损坏拒绝测试，现共 10 项测试通过。目标 C++ 编译尚未验证。
-- Efinity 路径 `C:/Users/SteLl1a/Desktop/Work/FPGA Contest/env/Efinity IDE/2026.1/bin`（用户确认）；未在此发现 RISC-V GCC/G++/Eclipse/OpenOCD，只有运行库 DLL，勿误称具备交叉工具链。
-- 本地 DDR3 TinyML 示例位于 `C:/Users/SteLl1a/Desktop/Work/FPGA Contest/demo/tinyml-main/tinyml_hello_world/Ti60F225_tinyml_helloworld`，已有 Sapphire/BSP，版本 2025.1.110.1.5、I3。下一步先读其 RTL/BSP 与当前 DDR/IP 差异；只读参考，移植到新工作副本。
-- 官方新版已固定克隆在 `refs/TinyML/upstream-2026.1`，commit `96886fa0c73e25e6218db7d0863f84677cf65138`；长路径 checkout 已通过 local core.longpaths 与 sparse checkout 修复，状态干净。不要重下全部源码。
-- 详细记录 `docs/04_deployment/fpga_bringup.md`，FPGA 副本内为 `docs/CNN_TINYML_BRINGUP.md`。
-- 本轮短期额度到 9% 时开始保存提交与 PR；按用户要求接近耗尽时暂停，不消耗重置权益。恢复时检查两个仓库的 PR 与 HEAD。
 
 ## 其他状态
 

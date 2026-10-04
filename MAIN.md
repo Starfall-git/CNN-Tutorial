@@ -28,7 +28,6 @@
 | 数据、训练、验证与云端流程 | [训练说明](docs/03_training/data_and_evaluation.md) |
 | 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
 | INT8 转换与 golden 回放 | [量化教程](docs/04_deployment/int8_conversion.md) |
-| FPGA 接入与独立副本 | [阶段 5 实施记录](docs/04_deployment/fpga_bringup.md) |
 | 真实实验记录 | [v0.1.0 基线](docs/05_experiments/v0.1.0_baseline.md) |
 | 分组验证与优化记录 | [v0.2.0 实验](docs/05_experiments/v0.2/README.md) |
 | 全整数精度与算子审计 | [v0.3.0 实验](docs/05_experiments/v0.3/README.md) |
@@ -114,7 +113,8 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 - 在较短用量窗口或周额度的剩余额度接近 1% 时，先保存代码、实验产物和恢复说明，再停止；额度恢复后继续。
 - 剩余额度通过应用的账号用量工具检查；不自动购买额度或消耗额外重置权益。
 
-阶段 5 已收到 FPGA 工程，按用户要求从 GitHub 克隆到桌面 `CNN-Tutorial-FPGA`，禁止修改原 `fpga-w.-codex`。已完成工程核对和 RAW8 接口仿真，后续推进板端静态对齐、输入缩放和连续视频叠加；详见阶段 5 实施记录。
+下一步按真实采集/分组评估 → 优化候选 → INT8 回归 → 板端静态对齐 → 连续视频叠加推进。等用户提供实际 FPGA 工程后，核定器件、时钟、工具版本与剩余资源。
+
 
 
 

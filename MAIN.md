@@ -18,6 +18,7 @@
 6. 每段 notebook 代码前放 Markdown 说明，基础语法简表在末尾；Python 模块保存共享实现。
 7. `refs/` 原始厂商资料、数据、大权重和运行凭证留在本地；Git 同步代码、教程与小体积实验报告。
 8. 每个主要版本检查、commit、push、PR；阶段确认后同步 MAIN 勾选。首版保留 PR 供审阅。
+9. 2026-10-04 用户明确要求：以官方 YOLO EVSoC 的 `main.cc`、`edge_vision_soc.v`、SapphireSoC 和 TinyML Accelerator 为 AI 链路基线，与原 `example_top.v` 视频链路进行最小必要连接；推理/叠加由 UART 独立控制，AI 不得阻塞原视频。静态固件仅为接入前验证步骤。
 
 ## 文档与学习入口
 
@@ -30,6 +31,8 @@
 | INT8 转换与 golden 回放 | [量化教程](docs/04_deployment/int8_conversion.md) |
 | FPGA 接入与独立副本 | [阶段 5 实施记录](docs/04_deployment/fpga_bringup.md) |
 | Efinity → RISC-V 开发流程 | [IP 生成、BSP、硬件编译与上板分层验证](docs/04_deployment/efinity_to_riscv_workflow.md) |
+| 官方 EVSoC 双链路集成 | [源代码映射、内存/CDC/Overlay 约束](docs/04_deployment/evsoc_dual_pipeline.md) |
+| 官方工具实际执行记录 | [模型生成及应用编译](docs/05_experiments/v0.5/README.md)、[Notebook 06](notebooks/06_official_evsoc_workflow.ipynb) |
 | RISC-V 静态固件 | [构建与关键源码](docs/04_deployment/riscv_static_firmware.md) |
 | 自定义指令与缓存 | [CI 接口约定](docs/04_deployment/riscv_custom_instruction.md) |
 | 真实实验记录 | [v0.1.0 基线](docs/05_experiments/v0.1.0_baseline.md) |

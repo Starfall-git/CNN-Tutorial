@@ -1,5 +1,18 @@
 # 恢复工作记录
 
+## 最新用户方向与接续点：官方 YOLO EVSoC 双链路
+
+2026-10-04 用户恢复执行，明确采用官方 `Ti60F225_yolo_person_detect_demo` 的 main.cc/edge_vision_soc.v 作为 AI 基线，与原 example_top.v 视频链路集成。详见 `docs/04_deployment/evsoc_dual_pipeline.md`；不要回退成只交付独立静态软件的路线。
+
+- 已读取 TinyML 用户手册 3.4 并渲染关键页。用户共享聊天链接未返回正文，未核对其中额外信息。
+- 原静态 r3 编译已结束：map/interface PASS，PNR FAIL（`jtag_inst2_TDI` 缺失）。无活跃编译需等待，也未下载板卡。
+- 官方 2026.1 生成器实际生成模型参数：`artifacts/v0.5-official-generator-r2`；模型数组逐字节一致。桌面 tools 生成器是旧格式，而桌面 YOLO main/top 与固定 2026.1 正文相同。不要混用旧 define.cc 和新版 accel_settings.cc。
+- FPGA 独立副本 `artifacts/evsoc-gesture-r1` 已复制用户官方 demo，并保留原文件快照。静态 main 派生自官方源文件、使用生成的 gesture 模型，官方 Makefile/SDK 编译链接成功。ELF SHA `b7889b9da8efb41862dd6faacde94fb8331f9b4e14ef60e9f30efd3900f67b5f`。
+- 复现脚本：教程仓库 `scripts/generate_official_tinyml.py`；FPGA 副本 `tools/prepare_evsoc_gesture.py`、`adapt_evsoc_static.py`、`build_evsoc_application.py`，主函数片段 `firmware/evsoc_gesture/static_main.inc`。结果汇总在 `docs/05_experiments/v0.5`。
+- 当前 copied BSP 仍是官方 HyperRAM 版本，应用编译成功不代表 DDR3 板上可运行。下一步必须实现双链路顶层、同一 DDR 控制器下的地址分区/仲裁、RAW8 预处理、UART 控制、帧边界 Overlay，并重新生成匹配 BSP。
+- 软件静态验证仅为中间步骤，不能取代最终双链路。原视频 example_top 无关逻辑不改，AI 忙只丢 AI 输入，禁止拖停摄像头/HDMI；当前模型输出类别而非 YOLO 框。
+- 保留副本用户修改 `outflow/Ti60_AR0135.tcl.out`，禁止修改原 `fpga-w.-codex`；MAIN 阶段勾选由用户确认。
+
 ## 最新：r3 IP 生成完成，硬件编译正在运行
 
 2026-10-04 本轮已实际完成独立 r3 的 Sapphire RTL/BSP 生成（exit 0），不是板上验收。FPGA 工具提交 `3a6519e5` 已推送现有分支 / PR #20。

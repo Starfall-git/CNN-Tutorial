@@ -1,0 +1,25 @@
+{
+  "source": "C:\\Users\\SteLl1a\\Desktop\\tinyml-main\\tinyml_vision\\Ti60F225_yolo_person_detect_demo",
+  "application_workspace": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\embedded_sw\\SapphireSoc\\software\\standalone\\evsoc_tinyml_ypd",
+  "bsp_root": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\embedded_sw\\SapphireSoc",
+  "source_sha256": {
+    "edge_vision_soc.v": "9a4924612d45b372896d7f7188201ad9a2adfb10e164a9b1ea6a8ec959e20b68",
+    "edge_vision_soc.xml": "07d23c231d4ddc3e8e02b7d5f25f65367f726d3cdee76d6b70b5b04739e607a4",
+    "embedded_sw\\SapphireSoc\\software\\standalone\\evsoc_tinyml_ypd\\src\\main.cc": "194461abf5e1e9dd6a3dcab8b56dbee5a03cea5014278092cd8608c36b13bdba"
+  },
+  "video_top_sha256": "559888e19b60bdc229e85c0ab35d13b6f9064fce07a26ce66644c5d328dd0254",
+  "model_sha256": "7891518a9b70ec6b3be8649123651780ce87ede1e69a9a49c394c17d203a0baa",
+  "generator_sha256": "193da2ed90cc17bf337fd898d501710f0a63be2e9703b41364e95393f14fc9ff",
+  "generated_files": {
+    "output\\gesture_int8_core0\\tinyml_core0_define.v": "fd84f64a9ea6aedb210b2387d9c6be6287517ba84a2155902fce539ed1757fb6",
+    "output\\gesture_int8_core0\\gesture_int8_model_data.cc": "63035bfb3a7f7b255bbe277ef9827d0db42ffc2846f2e9ef11f1a77b373b6494",
+    "output\\gesture_int8_core0\\gesture_int8_model_data.h": "7261b323494fd12c3dbd8f0a140eb7976b98780f640d70f0c6bc981f2aadae8a"
+  },
+  "main_adapted": true,
+  "hardware_integrated": false,
+  "hardware_compiled": false,
+  "board_verified": false,
+  "application_mode": "static_accelerator_golden",
+  "adapted_main_sha256": "8b790c1732567e97d3fb6f2ac31045181fcac636dbe0959e74dc08f4feffe5e8",
+  "golden_bundle_sha256": "1b4aa52a64b0e3a6122d5788ee1afe680df33a7617ef4c907ee2cf5209fe170b"
+}

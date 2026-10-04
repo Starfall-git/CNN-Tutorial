@@ -30,3 +30,8 @@
 4. 保存完整串口日志、实际 CPU Hz、arena、输出字节与周期，再启用匹配的 2026 TinyML 加速路径进行同输入比较。
 
 本轮 Windows 的 `Win32_SerialPort` 以及按 FTDI/JTAG/USB Serial/CH340 名称筛选的 PnP 查询未返回设备。它只说明本次查询没有发现对应项，不能区分未连接、驱动未安装或设备使用其他名称。已向用户询问供电/JTAG/UART 连接状态；没有打开串口、复位、下载或烧写。
+
+
+### 连接状态更新
+
+用户随后确认板卡已供电且 JTAG/UART 均已连接。再次用 `Get-PnpDevice -PresentOnly` 枚举得到 `USB Serial Port (COM7)`（FTDI VID 0403/PID 6014）和 `USB-SERIAL CH340 (COM8)`（VID 1A86/PID 7523），状态均为 OK。之前的空结果已被这次结果更新。尚未用下载器枚举确认 JTAG 链，COM7/COM8 的实际角色应结合工具配置核对，不能只根据端口号猜测。没有打开串口、复位或加载固件。

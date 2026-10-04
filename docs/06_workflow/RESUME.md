@@ -1,5 +1,11 @@
 # 恢复工作记录
 
+## 最新用户确认与额度保存
+
+本轮读取 MAIN.md 实际用户改动：阶段2/3/4/5已由用户勾选，原样保留同步；阶段6/7未勾选。以后以此最新记录为准，旧文中的“阶段2/3待确认”“阶段5未完成”属于历史状态。后续工程任务属于阶段6的完整系统实现和上板验收，不能将checkbox解释为已有硬件/FPS实测。
+
+短时额度已用95%时开始最后保存，继续前先查询恢复情况。当前无活跃编译：gesture全量make和Overlay仿真均已结束通过；最后推送主体为教程 cbe3e0a（CI run 37207875050 success）和 FPGA c1520434。用户确认同步后的最新SHA需重新检查CI，并按已有授权处理教程PR #4合并；FPGA Draft #20仍未完成完整硬件集成，保持明确状态。恢复后无需重复训练、生成或编译已经验证的同一产物。
+
 ## 最新接续：gesture 命名与 Overlay 模块
 
 - 用户要求应用改名 `evsoc_tinyml_gesture`，已更新独立副本应用目录、`.project/.cproject`、Makefile PROJ_NAME、准备/适配/构建脚本及 manifest。官方参考源仍保持 ypd 原名。新 ELF SHA `371cd1ac4118e7bbd85356fd596901c19d9b07675b8c1365c9bb4b0e6a205113`，官方 Makefile 全量编译 exit 0；旧对象移至副本 `legacy_ypd_build` 保存。

@@ -1,0 +1,15 @@
+{
+  "comparison.npz": "395dbe8d4988f539ef39e79a4ffe7b75b7a40300eeb5f3b7224087b7cd4d5703",
+  "gesture_int8.tflite": "7891518a9b70ec6b3be8649123651780ce87ede1e69a9a49c394c17d203a0baa",
+  "golden/manifest.json": "dab488bdbf7143bb453cc36e0dbaf9bff30c1e96dc8156988f02a776a7492ce8",
+  "golden/paper_input.bin": "24b8c15d5be12263a8c0e825cc783be76c2dd6bfe85019376c7329f6e07b1f7e",
+  "golden/paper_output.bin": "0997ad6df802da524757bae59fdfab73644c810c8e5940819d17f00f7e65a17d",
+  "golden/rock_input.bin": "e66b500f13ca8e0a4491ddcb89fbb06326a94bdccc44ebafd93880dfc8930ee8",
+  "golden/rock_output.bin": "8a903a3aee0438cf4e8bb530b1aa131c00769041b1b2ac288a3cffddcc8a6c5f",
+  "golden/scissors_input.bin": "358ff3118f0362059abd5d2c4de82ae5470a16dbcb06dab9e9e2dd5e7725e871",
+  "golden/scissors_output.bin": "2dcd0b0927a31d761490abdec32166d6d2fd1a3867cdf2550f0f3791b1244577",
+  "graph_audit.json": "71dfd407d802a660474c159bc91c9e7f179ce50eb0d57fddf92071c5d4eac910",
+  "report.json": "08ddb50753132d74327f7967d9789b676717ad135fd5800f33df9456f8ad0a9e",
+  "vendor_analysis.json": "038835e73e862941ca17df5739fc10b8ab17779bc02762bf7697291d00d5fccb",
+  "vendor_analyzer.log": "7129464e70dad49e93f78005fbfba1070e070e7faf5e308784b84f80b264bca4"
+}

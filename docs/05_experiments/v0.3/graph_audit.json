@@ -1,0 +1,328 @@
+{
+  "schema_version": 3,
+  "subgraphs": 1,
+  "operator_codes": [
+    {
+      "name": "CONV_2D",
+      "version": 3
+    },
+    {
+      "name": "MAX_POOL_2D",
+      "version": 2
+    },
+    {
+      "name": "AVERAGE_POOL_2D",
+      "version": 2
+    },
+    {
+      "name": "RESHAPE",
+      "version": 1
+    },
+    {
+      "name": "FULLY_CONNECTED",
+      "version": 4
+    }
+  ],
+  "operations": [
+    {
+      "index": 0,
+      "name": "CONV_2D",
+      "version": 3
+    },
+    {
+      "index": 1,
+      "name": "MAX_POOL_2D",
+      "version": 2
+    },
+    {
+      "index": 2,
+      "name": "CONV_2D",
+      "version": 3
+    },
+    {
+      "index": 3,
+      "name": "MAX_POOL_2D",
+      "version": 2
+    },
+    {
+      "index": 4,
+      "name": "CONV_2D",
+      "version": 3
+    },
+    {
+      "index": 5,
+      "name": "MAX_POOL_2D",
+      "version": 2
+    },
+    {
+      "index": 6,
+      "name": "AVERAGE_POOL_2D",
+      "version": 2
+    },
+    {
+      "index": 7,
+      "name": "RESHAPE",
+      "version": 1
+    },
+    {
+      "index": 8,
+      "name": "FULLY_CONNECTED",
+      "version": 4
+    }
+  ],
+  "tensors": [
+    {
+      "index": 0,
+      "name": "serving_default_gray_roi:0",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        64,
+        64,
+        1
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 1,
+      "name": "model/flatten/Const",
+      "dtype": "INT32",
+      "shape": [
+        2
+      ],
+      "constant_bytes": 8,
+      "scale_count": 0,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 2,
+      "name": "model/logits/BiasAdd/ReadVariableOp",
+      "dtype": "INT32",
+      "shape": [
+        3
+      ],
+      "constant_bytes": 12,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 3,
+      "name": "model/logits/MatMul",
+      "dtype": "INT8",
+      "shape": [
+        3,
+        1024
+      ],
+      "constant_bytes": 3072,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 4,
+      "name": "model/conv_6/BiasAdd/ReadVariableOp",
+      "dtype": "INT32",
+      "shape": [
+        64
+      ],
+      "constant_bytes": 256,
+      "scale_count": 64,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 5,
+      "name": "model/conv_6/Conv2D",
+      "dtype": "INT8",
+      "shape": [
+        64,
+        3,
+        3,
+        32
+      ],
+      "constant_bytes": 18432,
+      "scale_count": 64,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 6,
+      "name": "model/conv_3/BiasAdd/ReadVariableOp",
+      "dtype": "INT32",
+      "shape": [
+        32
+      ],
+      "constant_bytes": 128,
+      "scale_count": 32,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 7,
+      "name": "model/conv_3/Conv2D",
+      "dtype": "INT8",
+      "shape": [
+        32,
+        3,
+        3,
+        16
+      ],
+      "constant_bytes": 4608,
+      "scale_count": 32,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 8,
+      "name": "model/conv_0/BiasAdd/ReadVariableOp",
+      "dtype": "INT32",
+      "shape": [
+        16
+      ],
+      "constant_bytes": 64,
+      "scale_count": 16,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 9,
+      "name": "model/conv_0/Conv2D",
+      "dtype": "INT8",
+      "shape": [
+        16,
+        3,
+        3,
+        1
+      ],
+      "constant_bytes": 144,
+      "scale_count": 16,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 10,
+      "name": "model/conv_0/Relu;model/conv_0/BiasAdd;model/conv_0/Conv2D;model/conv_0/BiasAdd/ReadVariableOp",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        64,
+        64,
+        16
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 11,
+      "name": "model/max_pooling2d/MaxPool",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        32,
+        32,
+        16
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 12,
+      "name": "model/conv_3/Relu;model/conv_3/BiasAdd;model/conv_3/Conv2D;model/conv_3/BiasAdd/ReadVariableOp",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        32,
+        32,
+        32
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 13,
+      "name": "model/max_pooling2d_1/MaxPool",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        16,
+        16,
+        32
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 14,
+      "name": "model/conv_6/Relu;model/conv_6/BiasAdd;model/conv_6/Conv2D;model/conv_6/BiasAdd/ReadVariableOp",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        16,
+        16,
+        64
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 15,
+      "name": "model/max_pooling2d_2/MaxPool",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        8,
+        8,
+        64
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 16,
+      "name": "model/average_pooling2d/AvgPool",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        4,
+        4,
+        64
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 17,
+      "name": "model/flatten/Reshape",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        1024
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    },
+    {
+      "index": 18,
+      "name": "StatefulPartitionedCall:0",
+      "dtype": "INT8",
+      "shape": [
+        1,
+        3
+      ],
+      "constant_bytes": 0,
+      "scale_count": 1,
+      "quantized_dimension": 0
+    }
+  ],
+  "tensor_type_counts": {
+    "INT8": 14,
+    "INT32": 5
+  },
+  "custom_ops": 0,
+  "float_tensors": 0,
+  "arena_bytes": null,
+  "arena_note": "Requires target TFLite Micro allocator measurement"
+}

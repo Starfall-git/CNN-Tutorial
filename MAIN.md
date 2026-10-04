@@ -139,3 +139,5 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 阶段 6：实际 DDR3 视频副本的96MHz Sapphire RTL/模板/BSP已由官方工具生成成功，详见 [生成记录](docs/05_experiments/v0.5/sapphire_system_generation.json)。仅完成IP生成，顶层和内存映射未接通。
 
 阶段 6：[官方 SoC 子系统与 AI 内存窗口](docs/05_experiments/v0.5/subsystem.md)已写入代码，窗口仿真通过；官方加密IP的ModelSim验证未通过，待Efinity综合及实际顶层连接。
+
+阶段 6：[共享 DDR 缓冲、隔离与仲裁](docs/05_experiments/v0.5/shared_ddr.md)组合仿真通过，覆盖AI停顿及复位排空；尚未接物理顶层，720p带宽/时序与上板验证待完成。

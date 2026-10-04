@@ -1,5 +1,16 @@
 # 恢复工作记录
 
+## 2026-10-05 最新：共享DDR事务层组合验证已通过
+
+FPGA最新3d10d636已推送Draft20。新增cnn_axi_transaction_buffer、cnn_axi_isolated_port、cnn_ddr_arbiter、cnn_shared_ddr及4个runner/testbench。AI先完整缓存写突发、为读预留完整空间；独立ai_abort取消未发出事务、排空已发出事务，窗口/缓存/仲裁都不能接CPU独立复位。三路端口0视频物理地址，1/2为CPU/TinyML逻辑窗口。
+
+四项ModelSim仿真通过，包含256拍缓冲、隔离窗口、12事务轮询、CPU写中abort与TinyML不接读结果时的共享通路。组合测试347次视频读取继续完成（不是帧数/FPS）。证据docs/05_experiments/v0.5/shared_ddr_report.json。共享测试初版negedge TB ready竞争，改posedge采握手后通过，RTL未改来迎合测试。无活动仿真/编译，无下载板卡。
+
+下一步实际top：将cpu raw combined和TinyML full AXI接入这两路，视频现有AWARMux后接端口0，DdrCtrl唯一驱动接共享输出。官方axi_full_to_half_duplex.v的s_axi_bresp固定0，不能直接使用，否则吞掉窗口DECERR；应保留许可的小改版或正确适配并测试。然后接cnn_soc_subsystem、AI排空复位、JTAG/SPI/UART与IP依赖，走Efinity综合。官方加密IP ModelSim仍不支持，不造假模型代替。
+
+完整720p真实reader/writer/FIFO压力、BRAM推断/资源、时序/布局布线、RAW8预处理和软件循环/板上验证仍待完成。原fpga-w.-codex只读，副本用户outflow改动保留。阶段6/7保持未完成。
+
+
 ## 2026-10-05 最新：额度已恢复，SoC外层与AI内存窗口已提交
 
 FPGA最新8bbc931e（Draft20），新增cnn_soc_subsystem.v：实际Sapphire78端口和TinyML35个AXI端口完整连接，自定义指令/中断/APB1端点有真实实例代码；尚未接example_top。生成器由实际公开声明生成，用户编辑后拒绝覆盖。新cnn_axi_window.v进行[0x1000,0x04001000)→[0x04000000,0x08000000)受限转换，非法全突发DECERR，无DDR访问。窗口数字仿真与外层语法编译PASS。

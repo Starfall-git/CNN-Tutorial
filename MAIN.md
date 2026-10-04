@@ -133,3 +133,5 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 | v0.4.0 | 阶段 5.3 静态交叉编译通过，待目标运行 | [PR #4](https://github.com/Starfall-git/CNN-Tutorial/pull/4)、[FPGA Draft #20](https://github.com/Starfall-git/fpga-w.-codex/pull/20) |
 
 阶段 6 接续：新增 [APB 手势结果发布验证](docs/05_experiments/v0.5/result_apb.md)。寄存器接口与真实跨时钟邮箱仿真通过，发布函数通过官方 RISC-V 编译；顶层接线、DDR仲裁及上板验收仍未完成。
+
+阶段 6 新进展：[独立 UART 推理/叠加控制与视频端点](docs/05_experiments/v0.5/uart_endpoint.md)组合仿真及上位机测试通过；继续在 [Draft PR #7](https://github.com/Starfall-git/CNN-Tutorial/pull/7) / FPGA Draft #20 推进实际顶层集成。

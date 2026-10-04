@@ -1,0 +1,29 @@
+{
+  "simulation_pass": true,
+  "firmware_compile_exit": 0,
+  "firmware_command": [
+    "C:\\Users\\SteLl1a\\Desktop\\Work\\FPGA_Contest\\env\\RISCV-IDE\\toolchain\\bin\\riscv-none-elf-g++.exe",
+    "-c",
+    "-march=rv32im_zicsr_zifencei",
+    "-mabi=ilp32",
+    "-O2",
+    "-Wall",
+    "-Werror",
+    "-IC:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\firmware\\evsoc_gesture",
+    "-IC:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\embedded_sw\\SapphireSoc\\bsp\\efinix\\EfxSapphireSoc\\include",
+    "-IC:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\embedded_sw\\SapphireSoc\\software\\standalone\\driver",
+    "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\cnn-result-apb-sim\\publish_test.cc",
+    "-o",
+    "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\cnn-result-apb-sim\\publish_test.o"
+  ],
+  "hardware_verified": false,
+  "top_integrated": false,
+  "sha256": {
+    "src/cnn/cnn_result_apb.v": "252c1393c3e1b978c4cd078c90d89a3a1c758166bad0dbfb70d523360088444a",
+    "src/cnn/cnn_result_mailbox.v": "87b9fd408076cb1246d77748e436f919d2166f49efe8ba6ddda6922712f34ddd",
+    "testbench/cnn_result_apb_tb.sv": "4feaf94cb8ffd0c7f47edccd5455e516e67b33e7d3c3e07b14e526e724dfb0b9",
+    "firmware/evsoc_gesture/gesture_result.h": "19cc0cc493ec544120f16ed3e3c5f322a5659a166a5f12cda4921e007dfdf96c",
+    "tools/run_cnn_result_apb_sim.py": "92cd7a1451ab6c9532eda25eb48587de799f75e86122b9a48a0ca99bb2d307cb"
+  },
+  "simulation_log_sha256": "48f6484da28865bbb9e3c124f6e99c41775ffb2dec847973e50ecf9c20a3d6fd"
+}

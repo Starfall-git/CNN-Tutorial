@@ -1,5 +1,14 @@
 # 恢复工作记录
 
+## 2026-10-05 最新：UART与结果/Overlay端点已组合验证
+
+FPGA最新提交07597651已推送Draft #20。UART CNN_ENABLE默认为0，新50/51命令与cnn_video_endpoint在三时钟组合仿真通过；cpu推理开关和pixel叠加独立，ACK来自实际Overlay enabled寄存器。APB 0x24可读推理允许/online。主机SerialClient已有get_cnn/set_cnn，GUI按钮尚未做。29项host测试、123组几何数据包、旧UART/Overlay/APB回归通过；详见docs/05_experiments/v0.5/uart_endpoint.md与报告。
+
+旧geometry fixture两处预期过时，旧HEAD也复现，已修正；两项旧runner输出迁移artifacts，运行产生的tracked历史work改动已恢复。FPGA唯一剩余非本轮改动仍是用户outflow/Ti60_AR0135.tcl.out。
+
+教程 Draft PR #7 已附加到聊天，先前bb07dba的CI成功。本轮新推送后需看新SHA的CI。无运行中编译、无下载板卡，阶段6保持未完成。下一步要连接真实example_top与官方Sapphire实例、DDR仲裁和预处理，不能继续只报告模块准备完成。保持原项目只读。
+
+
 ## 2026-10-05 最新：PR #4 已合并，APB结果接口通过
 
 教程 PR #4 已按用户授权合并，merge SHA 78997389db3a89efd93998f3f4c8e7abbb273d02（合并前CI成功）。教程当前分支 codex/evsoc-system-integration。阶段1–5用户勾选保留，当前推进阶段6。

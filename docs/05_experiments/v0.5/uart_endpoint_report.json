@@ -1,0 +1,58 @@
+{
+  "stage": 6,
+  "top_integrated": false,
+  "hardware_verified": false,
+  "tests": {
+    "endpoint": {
+      "pass": true,
+      "log": "artifacts/cnn-uart-endpoint-sim/vsim.log",
+      "sha256": "fa0c66c320a48413a6fededcfc75744b61a523752cbcbe2795fea5ca62550b8f"
+    },
+    "apb": {
+      "pass": true,
+      "log": "artifacts/cnn-result-apb-sim/vsim.log",
+      "sha256": "48f6484da28865bbb9e3c124f6e99c41775ffb2dec847973e50ecf9c20a3d6fd"
+    },
+    "overlay": {
+      "pass": true,
+      "log": "artifacts/cnn-overlay-sim/vsim.log",
+      "sha256": "dd3d699454b7e7c2785e39d8abc5a8f596e2f9b77a5ff16f6dc9638618e173dc"
+    },
+    "legacy_uart": {
+      "pass": true,
+      "log": "artifacts/uart-sim/vsim.log",
+      "sha256": "e8f7b260174cab8b83f0136208ce2f4870a74874257723a9219e228fa2969ae6"
+    },
+    "geometry": {
+      "pass": true,
+      "log": "artifacts/uart-geometry-sim/simulation.log",
+      "sha256": "89c844e481787819bc1bee1365f8678d5dc07b28a6131bf59122b6fd75ef8190"
+    },
+    "host": {
+      "pass": true,
+      "log": "artifacts/cnn-host-tests.log",
+      "sha256": "ea6df19ea48258ccff804e356e19cd8f99aff3a298df640c7bdef323345e89dd"
+    }
+  },
+  "sha256": {
+    "src/control/uart_image_control.v": "4caa390e1332bb22cc41c2fb3522ac402d89aa3b6d536f9ee9181198c7653214",
+    "src/cnn/cnn_video_endpoint.v": "5637298c191e958bc43a793acf9d4537d328d72c0d5dd3e2d7eb30668f8d5a20",
+    "src/cnn/cnn_video_overlay.v": "811d732de76f1cbdb3a20130366c94d3916c6eb425767cbda1efec3c4323f9df",
+    "src/cnn/cnn_overlay_bridge.v": "76bc230163083894207d2159d945096e773d3539690f79902b69365319f4f103",
+    "src/cnn/cnn_result_apb.v": "252c1393c3e1b978c4cd078c90d89a3a1c758166bad0dbfb70d523360088444a",
+    "src/cnn/cnn_result_mailbox.v": "87b9fd408076cb1246d77748e436f919d2166f49efe8ba6ddda6922712f34ddd",
+    "firmware/evsoc_gesture/gesture_result.h": "19cc0cc493ec544120f16ed3e3c5f322a5659a166a5f12cda4921e007dfdf96c",
+    "host/client.py": "fddf24c44b46eb82d864dbe2a8878a4404a3634fba2c844b129ce13dc2b8d75f",
+    "host/protocol.py": "bfc61b8cef52b7c58ebe4d5dccd2c9275644ec1a15b722692c5e90ad07694200",
+    "host/test_cnn.py": "062b013ebe221a6c64e3585fa606eeddc989518c1b73f5da2f72c1b28b7a934c",
+    "testbench/cnn_uart_endpoint_tb.sv": "ef75f01563028ade6703bf932182a5a15847f2f01cf46b17980098ac14d77290",
+    "tools/run_cnn_uart_endpoint_sim.py": "1c3a6505d6798ef59b68367f5d620636c8b516237382bd9c71f6ef3c5b5ed239",
+    "tools/run_geometry_uart_sim.py": "af9bd58616f3e3045847a22c127691adf017b855574fae69ba54322e02fe4c61",
+    "tools/run_uart_sim.py": "4af077ef0e73ee226f46aa2bc61c43e431a924dbd53ab6773b82b57647cd37b5"
+  },
+  "notes": [
+    "Legacy optional-port warnings remain; endpoint/APB tests have no warnings.",
+    "Geometry fixture baseline failure reproduced with pre-change UART source.",
+    "Firmware compiler details are in result_apb_report.json."
+  ]
+}

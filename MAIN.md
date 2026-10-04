@@ -2,7 +2,7 @@
 
 当前版本：**v0.4.0 开发中：RISC-V 静态固件与 FPGA 接入**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
 
-用户已确认并勾选**阶段 1–5**；PR #1/#2/#3 已合并，当前接入准备更新在 PR #4 和 FPGA Draft PR #20。已完成官方工具生成、手势应用交叉编译和 Overlay 模块仿真；阶段 6 的完整硬件接入、板上推理与实时叠加尚未完成。
+用户已确认并勾选**阶段 1–5**；PR #1/#2/#3/#4 已合并；阶段 6 在 `codex/evsoc-system-integration` 与 FPGA Draft PR #20 继续。已完成官方工具生成、手势应用交叉编译和 Overlay 模块仿真；阶段 6 的完整硬件接入、板上推理与实时叠加尚未完成。
 
 最新实测：26,371 参数，FP32 accuracy **95.70%**；全整数 INT8 accuracy **95.43%**、macro-F1 **0.9535**，模型 **33,240 字节**。量化下降 **0.27 个百分点**。这是已被观察过的合成数据基准，真实摄像头、无手背景与 FPGA FPS 仍待验证。
 
@@ -112,7 +112,7 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 |---|---|---|
 | 初始需求 | 已归档到 Git 历史 | 原始 MAIN 与本地资料边界 |
 | v0.1.0 | 阶段 1 已确认，PR #1 已合并 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
-| v0.2.0 | PR #2 已按用户授权合并；阶段 2/3 待勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
+| v0.2.0 | PR #2 已按用户授权合并；阶段 2/3 已由用户勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
 | v0.3.0 | 阶段 4 桌面量化验证通过；PR #3 已合并 | [INT8 精度回归、图审计与 golden vectors](docs/05_experiments/v0.3/README.md) |
 
 ### 后续执行约定（用户补充）
@@ -131,3 +131,5 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 | 开发版本 | 状态 | 交付 |
 |---|---|---|
 | v0.4.0 | 阶段 5.3 静态交叉编译通过，待目标运行 | [PR #4](https://github.com/Starfall-git/CNN-Tutorial/pull/4)、[FPGA Draft #20](https://github.com/Starfall-git/fpga-w.-codex/pull/20) |
+
+阶段 6 接续：新增 [APB 手势结果发布验证](docs/05_experiments/v0.5/result_apb.md)。寄存器接口与真实跨时钟邮箱仿真通过，发布函数通过官方 RISC-V 编译；顶层接线、DDR仲裁及上板验收仍未完成。

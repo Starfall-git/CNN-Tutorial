@@ -137,3 +137,5 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 阶段 6 新进展：[独立 UART 推理/叠加控制与视频端点](docs/05_experiments/v0.5/uart_endpoint.md)组合仿真及上位机测试通过；继续在 [Draft PR #7](https://github.com/Starfall-git/CNN-Tutorial/pull/7) / FPGA Draft #20 推进实际顶层集成。
 
 阶段 6：实际 DDR3 视频副本的96MHz Sapphire RTL/模板/BSP已由官方工具生成成功，详见 [生成记录](docs/05_experiments/v0.5/sapphire_system_generation.json)。仅完成IP生成，顶层和内存映射未接通。
+
+阶段 6：[官方 SoC 子系统与 AI 内存窗口](docs/05_experiments/v0.5/subsystem.md)已写入代码，窗口仿真通过；官方加密IP的ModelSim验证未通过，待Efinity综合及实际顶层连接。

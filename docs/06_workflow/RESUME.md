@@ -1,5 +1,16 @@
 # 恢复工作记录
 
+## 2026-10-05 最新：额度已恢复，SoC外层与AI内存窗口已提交
+
+FPGA最新8bbc931e（Draft20），新增cnn_soc_subsystem.v：实际Sapphire78端口和TinyML35个AXI端口完整连接，自定义指令/中断/APB1端点有真实实例代码；尚未接example_top。生成器由实际公开声明生成，用户编辑后拒绝覆盖。新cnn_axi_window.v进行[0x1000,0x04001000)→[0x04000000,0x08000000)受限转换，非法全突发DECERR，无DDR访问。窗口数字仿真与外层语法编译PASS。
+
+重要：完整官方Sapphire/TinyML的ModelSim编译失败（加密保护区域语法错误exit2），不是完整SoC仿真通过；后续通过Efinity官方综合验证，不换假IP冒充。证据docs/05_experiments/v0.5/subsystem_report.json。没有运行中的工具任务，未下载板卡。
+
+下一步实际集成：CPU/加速器两路统一地址窗口，完整写突发/读响应缓存、有界DDR仲裁、ID回传和AI复位排空；随后接example_top、Sapphire/TinyML和端点、注册官方依赖并做Efinity综合。窗口单独复位不能丢在途DDR事务；窗口本身不保证AI停顿不影响视频。SoC调试UART与现有命令UART不得并驱动TX，需决定调试通道或复用。
+
+本轮开始额度短时1%、周0%（均为已用）已恢复；继续工作中，不沿用旧额度100%停止状态。教程PR7最新状态需按最新提交检查。原fpga-w.-codex只读，副本用户outflow改动保留。阶段6/7仍未完成。
+
+
 ## 2026-10-05 最新：真实视频工程96MHz Sapphire生成成功，额度保存
 
 FPGA提交06b1b668已推送Draft #20。候选目录 artifacts/evsoc-system-r1 从独立副本的实际视频顶层/XML/peri/DDR IP准备，官方source保持原内容。已确认 example_top 的 w_ddr3_ui_clk=clk_sys=96MHz，不是DDR物理时钟。官方IPM API生成Sapphire成功、exit0，session87651已结束，无需等待或重启。RTL/模板/匹配BSP及日志哈希见 docs/05_experiments/v0.5/sapphire_system_generation.json。

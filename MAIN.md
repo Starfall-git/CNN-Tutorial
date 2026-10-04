@@ -141,3 +141,5 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 阶段 6：[官方 SoC 子系统与 AI 内存窗口](docs/05_experiments/v0.5/subsystem.md)已写入代码，窗口仿真通过；官方加密IP的ModelSim验证未通过，待Efinity综合及实际顶层连接。
 
 阶段 6：[共享 DDR 缓冲、隔离与仲裁](docs/05_experiments/v0.5/shared_ddr.md)组合仿真通过，覆盖AI停顿及复位排空；尚未接物理顶层，720p带宽/时序与上板验证待完成。
+
+- 阶段6子步骤：官方AXI响应适配与真实SoC内存封装，组合仿真通过，顶层/综合/上板待完成：[记录](docs/05_experiments/v0.5/evsoc_memory.md)。

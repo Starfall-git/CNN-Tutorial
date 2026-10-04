@@ -1,5 +1,12 @@
 # 恢复工作记录
 
+## 2026-10-05 最新：官方转换器响应修复与SoC内存封装
+
+新增cnn_axi_full_to_half_duplex.v（官方MIT源码仅加BRESP传递及重命名）、cnn_evsoc_memory.v（真实SoC/转换器/shared DDR实例）。两项新仿真PASS：转换器协议与转换器+共享DDR组合，CPU256拍abort、TinyML R停顿、350次视频读取、越界写DECERR不丢失。封装仅语法编译PASS，尚未接example_top。详细docs/05_experiments/v0.5/evsoc_memory.md/report.json。
+
+下一步直接使用cnn_evsoc_memory接现有video AWARMux后端口和DdrCtrl唯一输入，父层须处理AI复位等待ai_quiescent、JTAG/SPI/UART、IP/XML/SDC。不能把当前封装当完整顶层；无综合/板上结果。生成器会覆盖派生封装，人工改动前先保存。原fpga-w.-codex只读，副本outflow用户改动保留。教程023606c CI37228805738已success，新提交CI另查。无本地运行中工具、无下载板卡，阶段6/7未完成。额度接近上限时保存并停止，恢复时先查询实际额度。
+
+
 ## 2026-10-05 最新：共享DDR事务层组合验证已通过
 
 FPGA最新3d10d636已推送Draft20。新增cnn_axi_transaction_buffer、cnn_axi_isolated_port、cnn_ddr_arbiter、cnn_shared_ddr及4个runner/testbench。AI先完整缓存写突发、为读预留完整空间；独立ai_abort取消未发出事务、排空已发出事务，窗口/缓存/仲裁都不能接CPU独立复位。三路端口0视频物理地址，1/2为CPU/TinyML逻辑窗口。

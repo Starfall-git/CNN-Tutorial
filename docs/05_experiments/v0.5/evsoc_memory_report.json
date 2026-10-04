@@ -1,0 +1,18 @@
+{
+  "stage": 6,
+  "top_integrated": false,
+  "hardware_verified": false,
+  "adapter_test": "PASS",
+  "adapter_shared_ddr_test": "PASS",
+  "video_read_transactions": 350,
+  "wrapper_validation": "syntax only; encrypted vendor IP not elaborated",
+  "files": {
+    "src/cnn/cnn_axi_full_to_half_duplex.v": "f35338d2310a5791c1acd02a300ba95a32fe85a6da93672717159734d20ca425",
+    "src/cnn/cnn_evsoc_memory.v": "4403ddd73cbc8803245125a2de4f5cb8fb7972e57272d16d049f9d1b23427a07",
+    "tools/generate_evsoc_memory.py": "67ee6b9288c292f37487acc1e20bbd6af06d6388eeb706f043e4d5961fb0926f",
+    "testbench/cnn_axi_adapter_tb.sv": "7e52b4480519a2aacd164b53d8733a5a85150fe5a1c277ce74200c02aa37dfb0",
+    "testbench/cnn_adapter_shared_ddr_tb.sv": "5c5e65747891a67e2cb6aa1fa8e80bca38b670471ebc801ab9d0078e4bcad2b9",
+    "artifacts/cnn-axi-adapter-sim/vsim.log": "6cbe5ab5e3d415b806c5db8565ae3149226296a1f0b6be8109f991e1f42fa1ca",
+    "artifacts/cnn-adapter-shared-ddr-sim/vsim.log": "ae5c05dd0860f8fb0681018f8879e89b85b2e9c7a2f4f42d19d3e398d187fffb"
+  }
+}

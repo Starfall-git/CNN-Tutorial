@@ -20,7 +20,7 @@ FPGA 副本脚本顺序：`prepare_evsoc_gesture.py` → `adapt_evsoc_static.py`
 
 新版运行时从硬件查询加速参数；旧 `src/model/define.cc` 与 `accel_settings.cc` 重复定义 `layer_mode`。仅从新应用 Makefile 的 SRCS 排除旧定义和旧 YOLO 模型数组，保留参考文件。加入链接未引用节回收，未手工替换编译工具链或绕过官方 Makefile。
 
-最终 make 返回 0，ELF SHA-256 `b7889b9da8efb41862dd6faacde94fb8331f9b4e14ef60e9f30efd3900f67b5f`。
+用户确认命名后，派生应用目录、Eclipse 项目和 Makefile 目标统一改为 `evsoc_tinyml_gesture`。旧对象保存到工作副本 `legacy_ypd_build`，进行了全量重新编译，make 返回 0。新产物为 `evsoc_tinyml_gesture.elf`，SHA-256 `371cd1ac4118e7bbd85356fd596901c19d9b07675b8c1365c9bb4b0e6a205113`。改名前报告另存 `official_build_ypd_history.json`，不回写历史哈希。
 
 | 区域 | 字节 |
 |---|---:|

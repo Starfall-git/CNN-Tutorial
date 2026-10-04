@@ -1,5 +1,12 @@
 # 恢复工作记录
 
+## 最新接续：gesture 命名与 Overlay 模块
+
+- 用户要求应用改名 `evsoc_tinyml_gesture`，已更新独立副本应用目录、`.project/.cproject`、Makefile PROJ_NAME、准备/适配/构建脚本及 manifest。官方参考源仍保持 ypd 原名。新 ELF SHA `371cd1ac4118e7bbd85356fd596901c19d9b07675b8c1365c9bb4b0e6a205113`，官方 Makefile 全量编译 exit 0；旧对象移至副本 `legacy_ypd_build` 保存。
+- FPGA 新增 `src/cnn/cnn_result_mailbox.v`、`cnn_video_overlay.v`、`cnn_overlay_bridge.v`，测试 `tools/run_cnn_overlay_sim.py`：9帧16×12（1,728像素），异步传递、忙时保护、源/目标复位、帧边界开关、过期和三类字形/颜色均 PASS。说明在 FPGA `docs/CNN_OVERLAY.md`。
+- 当前未接入 example_top.v/UART/APB；不要把小尺寸模块仿真称为整链路或物理CDC通过。下一步加结果寄存器与UART控制桥、ROI显示坐标映射，并将桥接模块接到ISP输出；仍需共享DDR仲裁、Sapphire/TinyML顶层、RAW8预处理及匹配BSP。
+- 当前顶层 DDR 控制器是合并地址接口，`AXI4_AWARMux` 合并视频 AW/AR，现有 size 固定为4（128位）；SoC/加速器接入必须核对尺寸/突发转换，不能套用旧静态工程完整AXI4接口而不做适配。
+
 ## 最新用户方向与接续点：官方 YOLO EVSoC 双链路
 
 2026-10-04 用户恢复执行，明确采用官方 `Ti60F225_yolo_person_detect_demo` 的 main.cc/edge_vision_soc.v 作为 AI 基线，与原 example_top.v 视频链路集成。详见 `docs/04_deployment/evsoc_dual_pipeline.md`；不要回退成只交付独立静态软件的路线。

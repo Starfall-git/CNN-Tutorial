@@ -68,7 +68,7 @@ flowchart LR
 3. 本项目 `scripts/generate_official_tinyml.py` 调用未修改的官方 Widget/parse_model/Generate 方法，隐藏窗口以便复现；它不手工伪造参数文件。实际输出位于 `artifacts/v0.5-official-generator-r2`，C 数组与模型逐字节相同。
 4. 2026.1 生成 `tinyml_core0_define.v` 与模型 `.cc/.h`，其运行时通过加速器配置接口读取硬件参数。旧版手册及桌面旧生成器会生成 `defines.v`、`define.cc/.h`；不得混用两套文件格式。
 5. FPGA 副本 `tools/prepare_evsoc_gesture.py` 复制用户官方 demo，保留源码和 BSP 相对结构，将新模型与硬件参数放入正确目录。它不会下载板卡。
-6. 手册 PDF 第 23 页（印刷页 18）指定 workspace 为 `embedded_sw/SapphireSoc`，应用工程导入 `software/standalone/evsoc_tinyml_ypd`。按本次用户要求可把工作区设在应用目录，但导入应使用 Existing Code，并禁止重复复制工程，否则 `STANDALONE=..` 的 BSP 路径会失效。
+6. 手册 PDF 第 23 页（印刷页 18）指定 workspace 为 `embedded_sw/SapphireSoc`，官方参考应用为 `software/standalone/evsoc_tinyml_ypd`。本项目按用户要求将派生应用统一命名为 `software/standalone/evsoc_tinyml_gesture`，同步 Eclipse `.project/.cproject` 和 Makefile 目标。工作区可按用户要求放在 gesture 应用目录，导入使用 Existing Code，禁止重复复制工程，否则 `STANDALONE=..` 的 BSP 路径会失效。
 7. 当前 first-run 主程序从官方 main 派生为静态加速器自检：保留初始化和推理流程，输入替换为三组 golden，输出按 [1,3] 检查。它是双链路接入前的验证步骤，不代替最终相机系统。
 8. 之后完成上述顶层连接，再 Generate Sapphire/其他所需 IP，使用相同工程产生的 BSP 编译。硬件综合、接口、布局布线、时序和视频回归通过后，才依次进行 UART、DDR、golden、摄像头、Overlay 验证。
 
@@ -78,3 +78,7 @@ flowchart LR
 - 旧 `hardware-static-r3` 的 Compile：map PASS、interface PASS、pnr FAIL；具体错误为缺少 `jtag_inst2_TDI`。这是旧调试模块与接口配置的连接问题，不能把综合成功称为完整编译成功。
 - `evsoc-gesture-r1` 尚未完成双链路顶层和内存集成，不能下载官方 HyperRAM bitstream 到本 DDR3 板卡。
 - 阶段 5 仍进行中；阶段 6 的连续视频、真实识别与约 15 FPS 尚未验收。阶段勾选由用户确认。
+
+## Overlay 模块当前进展
+
+FPGA 副本新增 `src/cnn/cnn_result_mailbox.v`、`cnn_video_overlay.v`、`cnn_overlay_bridge.v`，实现异步结果传递、帧边界提交、ROI 边框和 P/R/S 字符、独立叠加开关和过期隐藏。9帧共1,728像素的 ModelSim 测试通过，含组合桥、两侧复位及三类图案检查。尚未接入 example_top.v 和 UART/APB，物理 CDC 约束、720p整链路和DDR压力测试仍待完成。

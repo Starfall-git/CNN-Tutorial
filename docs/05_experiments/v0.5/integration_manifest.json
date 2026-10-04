@@ -1,6 +1,6 @@
 {
   "source": "C:\\Users\\SteLl1a\\Desktop\\tinyml-main\\tinyml_vision\\Ti60F225_yolo_person_detect_demo",
-  "application_workspace": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\embedded_sw\\SapphireSoc\\software\\standalone\\evsoc_tinyml_ypd",
+  "application_workspace": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\embedded_sw\\SapphireSoc\\software\\standalone\\evsoc_tinyml_gesture",
   "bsp_root": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\embedded_sw\\SapphireSoc",
   "source_sha256": {
     "edge_vision_soc.v": "9a4924612d45b372896d7f7188201ad9a2adfb10e164a9b1ea6a8ec959e20b68",
@@ -21,5 +21,6 @@
   "board_verified": false,
   "application_mode": "static_accelerator_golden",
   "adapted_main_sha256": "8b790c1732567e97d3fb6f2ac31045181fcac636dbe0959e74dc08f4feffe5e8",
-  "golden_bundle_sha256": "1b4aa52a64b0e3a6122d5788ee1afe680df33a7617ef4c907ee2cf5209fe170b"
+  "golden_bundle_sha256": "1b4aa52a64b0e3a6122d5788ee1afe680df33a7617ef4c907ee2cf5209fe170b",
+  "application_name": "evsoc_tinyml_gesture"
 }

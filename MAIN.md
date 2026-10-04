@@ -122,3 +122,7 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 
 
 阶段 5.3：108 个翻译单元已编译、链接为 RISC-V ELF。教学入口：[05 静态固件](notebooks/05_riscv_static_bringup.ipynb)。未进行硬件下载，目标输出、arena 和 FPS 待测；原 FPGA 目录保持只读。
+
+| 开发版本 | 状态 | 交付 |
+|---|---|---|
+| v0.4.0 | 阶段 5.3 静态交叉编译通过，待目标运行 | [PR #4](https://github.com/Starfall-git/CNN-Tutorial/pull/4)、[FPGA Draft #20](https://github.com/Starfall-git/fpga-w.-codex/pull/20) |

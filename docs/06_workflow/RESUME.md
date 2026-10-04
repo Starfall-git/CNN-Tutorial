@@ -61,3 +61,5 @@
 - UART 初始化与模型 SHA 日志已补齐；256 KiB arena 仅容量，2 MiB 默认栈不是模型大小。nosys/RWX 警告保留在报告。
 - 三份用户 PDF 已读取并渲染关键页；解释在 `riscv_custom_instruction.md`，构建解释在 `riscv_static_firmware.md`，Notebook 05 提供报告回放。
 - 下一步：匹配本板 C4、DDR3 和引脚的独立 Sapphire 硬件/BSP。当前 ELF 从 0x1000 开始，不能直接载入视频系统。先拿到静态 UART golden/arena/cycles，再进行 CI 加速和视频地址分区。没有烧写设备、没有硬件运行成绩。
+
+- 已同步：CNN-Tutorial PR #4 https://github.com/Starfall-git/CNN-Tutorial/pull/4；FPGA Draft PR #20 固件提交 `1d7a905a00cf8e0c0403587f89d45e0e73d67df8`。Notebook 05 实际执行、10 项测试、格式/链接及视频配置检查通过。Code Review 本轮仍连接失败；CI 以新 PR 最新 SHA 为准。

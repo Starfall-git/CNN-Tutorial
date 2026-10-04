@@ -1,10 +1,10 @@
 # CNN-Tutorial · 版本、约束与阶段
 
-当前版本：**v0.2.0：分组验证、训练优化与最终训练**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
+当前版本：**v0.3.0：全整数 INT8 转换与精度回归**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
 
-用户已确认并勾选**阶段 1**，授权在当前工作完成后合并版本并继续。阶段 2/3 的技术工作与结果已交付，清单仍等待用户确认；阶段 4 开始推进量化。
+用户已确认并勾选**阶段 1**；授权合并的 PR #1/#2 均已合并。阶段 2/3 的技术工作与结果已交付，清单仍等待用户确认；本次完成**阶段 4 的桌面量化验证**，PR #3 供验收。下一步为阶段 5 的板卡工程接入。
 
-最新实测：26,371 参数，官方公开基准 accuracy **95.70%**、macro-F1 **0.9563**。这是已被观察过的合成数据基准，真实摄像头、无手背景、INT8 与 FPGA FPS 仍待验证。
+最新实测：26,371 参数，FP32 accuracy **95.70%**；全整数 INT8 accuracy **95.43%**、macro-F1 **0.9535**，模型 **33,240 字节**。量化下降 **0.27 个百分点**。这是已被观察过的合成数据基准，真实摄像头、无手背景与 FPGA FPS 仍待验证。
 
 **阶段勾选由用户确认；代理不自行勾选。** 下方保留原始需求与阶段清单。当前模型 1 已选择固定 ROI 的 64×64 灰度石头/剪刀/布分类。
 
@@ -27,13 +27,17 @@
 | 模型与关键源码 | [灰度 CNN](docs/02_model/gray_gesture_cnn.md) |
 | 数据、训练、验证与云端流程 | [训练说明](docs/03_training/data_and_evaluation.md) |
 | 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
+| INT8 转换与 golden 回放 | [量化教程](docs/04_deployment/int8_conversion.md) |
 | 真实实验记录 | [v0.1.0 基线](docs/05_experiments/v0.1.0_baseline.md) |
 | 分组验证与优化记录 | [v0.2.0 实验](docs/05_experiments/v0.2/README.md) |
+| 全整数精度与算子审计 | [v0.3.0 实验](docs/05_experiments/v0.3/README.md) |
 | GitHub 与 Code Review | [版本工作流](docs/06_workflow/versioning.md) |
 
 Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](notebooks/01_gray_gesture_cnn.ipynb) → [02 训练验证](notebooks/02_train_validate.ipynb)。
 
 优化进阶：[03 分组验证与最终训练](notebooks/03_grouped_optimization.ipynb)。默认回放真实实验记录；可切换为完整训练。
+
+部署准备：[04 INT8 量化](notebooks/04_int8_quantization.ipynb)。默认回放真实量化报告；可切换为隔离环境导出。
 
 ---
 
@@ -100,7 +104,8 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 |---|---|---|
 | 初始需求 | 已归档到 Git 历史 | 原始 MAIN 与本地资料边界 |
 | v0.1.0 | 阶段 1 已确认，PR #1 已合并 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
-| v0.2.0 | 当前工作完成后按用户授权合并 PR #2；阶段 2/3 待勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
+| v0.2.0 | PR #2 已按用户授权合并；阶段 2/3 待勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
+| v0.3.0 | 阶段 4 桌面量化验证通过；PR #3 待验收 | [INT8 精度回归、图审计与 golden vectors](docs/05_experiments/v0.3/README.md) |
 
 ### 后续执行约定（用户补充）
 
@@ -109,7 +114,6 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 - 剩余额度通过应用的账号用量工具检查；不自动购买额度或消耗额外重置权益。
 
 下一步按真实采集/分组评估 → 优化候选 → INT8 回归 → 板端静态对齐 → 连续视频叠加推进。等用户提供实际 FPGA 工程后，核定器件、时钟、工具版本与剩余资源。
-
 
 
 

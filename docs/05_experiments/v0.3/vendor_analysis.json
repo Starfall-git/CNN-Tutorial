@@ -1,0 +1,9 @@
+{
+  "analyzer_sha256": "62646a1f9774ab85f871c33fb179c4102a28ae7822f85aaf6b8f1b8ca2ac6c52",
+  "model_sha256": "7891518a9b70ec6b3be8649123651780ce87ede1e69a9a49c394c17d203a0baa",
+  "probe_input_parallelism": 1,
+  "probe_output_parallelism": 1,
+  "return_code": 0,
+  "settings_generated": false,
+  "hardware_verified": false
+}

@@ -24,6 +24,6 @@ python -m notebook notebooks
 
 `requirements.txt` 是最低依赖声明，实际安装快照另存于实验目录。种子固定、cuDNN benchmark 关闭、启用确定性算法；不同 GPU、驱动与框架版本仍可能产生数值差异。
 
-## 后续量化环境
+## 已验证的量化环境
 
-本环境目前以 PyTorch GPU 训练为主。手册要求 TensorFlow Lite 全整数量化。v0.1 不在训练环境里强行混装旧版 TensorFlow；阶段 4 将建立独立、锁定版本的转换环境，并验证 PyTorch→Keras 浮点一致性，再导出 INT8。不能把 `.pt`、ONNX 或 PyTorch 的 INT8 文件直接当作板卡可用模型。
+训练环境以 PyTorch GPU 为主。阶段 4 已建立独立 `CNN-Tutorial-Quant`，实测 Python 3.11.16、TensorFlow 2.15.1、NumPy 1.26.4；已验证 PyTorch→Keras 浮点一致性并导出 INT8。安装与复现见 [量化教程](../04_deployment/int8_conversion.md)。Notebook 04 继续使用训练内核，通过独立 Python 子进程调用转换。不能把 `.pt`、ONNX 或 PyTorch 的 INT8 文件直接当作板卡可用模型。

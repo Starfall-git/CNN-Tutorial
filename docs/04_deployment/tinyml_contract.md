@@ -11,7 +11,9 @@
 
 原始厂商资料只在本地保存。公开框架入口：[Efinix TinyML](https://www.efinixinc.com/solutions-tinyml.html)、[Efinix-Inc/tinyml](https://github.com/Efinix-Inc/tinyml)。
 
-## 量化路线（阶段 4，尚未验收）
+## 量化路线（阶段 4 桌面验证完成，板端待验证）
+
+v0.3 已完成下面第 1–6 项及本地厂商分析器检查，INT8 accuracy 95.43%，下降 0.27 个百分点，详见 [量化教程](int8_conversion.md) 与 [实测报告](../05_experiments/v0.3/README.md)。目标工程编译与板上静态对齐尚未执行，阶段勾选由用户确认。
 
 1. 冻结训练模型、预处理、类别表和验证协议。
 2. 在独立 TensorFlow 环境逐层重建等价网络。卷积权重从 PyTorch `OIHW` 转为 Keras `HWIO`。特别注意 Flatten：PyTorch 按 CHW 展开，Keras 默认按 HWC 展开，Dense 的输入权重必须重排；不能只转置矩阵。

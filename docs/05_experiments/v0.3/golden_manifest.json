@@ -1,0 +1,71 @@
+{
+  "model_sha256": "7891518a9b70ec6b3be8649123651780ce87ede1e69a9a49c394c17d203a0baa",
+  "classes": [
+    "paper",
+    "rock",
+    "scissors"
+  ],
+  "input_shape": [
+    1,
+    64,
+    64,
+    1
+  ],
+  "layout": "NHWC",
+  "dtype": "signed int8",
+  "input_quantization": {
+    "scale": 0.003921568859368563,
+    "zero_point": -128,
+    "dtype": "int8"
+  },
+  "output_quantization": {
+    "scale": 0.14151470363140106,
+    "zero_point": 4,
+    "dtype": "int8"
+  },
+  "vectors": [
+    {
+      "evaluation_index": 0,
+      "true_class": "paper",
+      "predicted_class": "paper",
+      "input_file": "paper_input.bin",
+      "output_file": "paper_output.bin",
+      "input_sha256": "24b8c15d5be12263a8c0e825cc783be76c2dd6bfe85019376c7329f6e07b1f7e",
+      "output_sha256": "0997ad6df802da524757bae59fdfab73644c810c8e5940819d17f00f7e65a17d",
+      "output_int8": [
+        11,
+        0,
+        -2
+      ]
+    },
+    {
+      "evaluation_index": 124,
+      "true_class": "rock",
+      "predicted_class": "rock",
+      "input_file": "rock_input.bin",
+      "output_file": "rock_output.bin",
+      "input_sha256": "e66b500f13ca8e0a4491ddcb89fbb06326a94bdccc44ebafd93880dfc8930ee8",
+      "output_sha256": "8a903a3aee0438cf4e8bb530b1aa131c00769041b1b2ac288a3cffddcc8a6c5f",
+      "output_int8": [
+        -1,
+        79,
+        -60
+      ]
+    },
+    {
+      "evaluation_index": 248,
+      "true_class": "scissors",
+      "predicted_class": "scissors",
+      "input_file": "scissors_input.bin",
+      "output_file": "scissors_output.bin",
+      "input_sha256": "358ff3118f0362059abd5d2c4de82ae5470a16dbcb06dab9e9e2dd5e7725e871",
+      "output_sha256": "2dcd0b0927a31d761490abdec32166d6d2fd1a3867cdf2550f0f3791b1244577",
+      "output_int8": [
+        1,
+        -75,
+        63
+      ]
+    }
+  ],
+  "comparison": "Exact bytes for desktop replay; record target byte errors and argmax separately"
+}

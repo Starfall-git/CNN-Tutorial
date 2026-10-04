@@ -1,0 +1,92 @@
+{
+  "tensorflow": "2.15.1",
+  "checkpoint_sha256": "ed3e422f75b1765953cddc91fd49ab0f140e43f5c2c72e2a69785930365972ad",
+  "conversion_input_manifest_sha256": "9bb1926ddb422b2de69c22ae21634650270e9e929a81a91293d4c9fa68b28a13",
+  "float_max_absolute_error": 1.049041748046875e-05,
+  "float_class_agreement": 1.0,
+  "fp32_accuracy": 0.956989247311828,
+  "int8_accuracy": 0.9543010752688172,
+  "accuracy_drop_percentage_points": 0.26881720430107503,
+  "int8_confusion_matrix": [
+    [
+      107,
+      12,
+      5
+    ],
+    [
+      0,
+      124,
+      0
+    ],
+    [
+      0,
+      0,
+      124
+    ]
+  ],
+  "bytes": 33240,
+  "operations": [
+    "CONV_2D",
+    "MAX_POOL_2D",
+    "CONV_2D",
+    "MAX_POOL_2D",
+    "CONV_2D",
+    "MAX_POOL_2D",
+    "AVERAGE_POOL_2D",
+    "RESHAPE",
+    "FULLY_CONNECTED"
+  ],
+  "classes": [
+    "paper",
+    "rock",
+    "scissors"
+  ],
+  "int8_macro_f1": 0.9534967448010927,
+  "int8_per_class_recall": [
+    0.8629032258064516,
+    1.0,
+    1.0
+  ],
+  "evaluation_samples": 372,
+  "operator_codes": [
+    {
+      "name": "CONV_2D",
+      "version": 3
+    },
+    {
+      "name": "MAX_POOL_2D",
+      "version": 2
+    },
+    {
+      "name": "AVERAGE_POOL_2D",
+      "version": 2
+    },
+    {
+      "name": "RESHAPE",
+      "version": 1
+    },
+    {
+      "name": "FULLY_CONNECTED",
+      "version": 4
+    }
+  ],
+  "tensor_type_counts": {
+    "INT8": 14,
+    "INT32": 5
+  },
+  "input_quantization": {
+    "scale": 0.003921568859368563,
+    "zero_point": -128,
+    "dtype": "int8"
+  },
+  "output_quantization": {
+    "scale": 0.14151470363140106,
+    "zero_point": 4,
+    "dtype": "int8"
+  },
+  "float_tensor_count": 0,
+  "calibration_samples": 300,
+  "board_compatibility_verified": false,
+  "acceptance_drop_at_most_2pp": true,
+  "tflite_sha256": "7891518a9b70ec6b3be8649123651780ce87ede1e69a9a49c394c17d203a0baa"
+}

@@ -1,5 +1,8 @@
 # 2026-10-06 最新恢复点：r5动态链路已上板
 
+发布脚本实际板测PASS：五个ELF段回读一致，CNN_LIVE=1196185137 4 0 0，CPU保持运行等待开关。最后COM8被其他进程占用，agent未重新开启开关，请用户在已连接的GUI中开启推理/叠加。agent启动的OpenOCD已shutdown释放下载器。
+
+
 用户已确认r4 3/3通过并要求继续。r5已临时JTAG下载并运行实际相机推理。以本节为准，下文为历史。
 
 - 工程：CNN-Tutorial-FPGA/artifacts/evsoc-live-r5/Ti60_AR0135.xml；发布包deliverables/v0.5-ti60-live-r5.zip。54文件校验通过。

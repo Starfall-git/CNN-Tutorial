@@ -22,6 +22,8 @@
 
 ## 文档与学习入口
 
+2026-10-05 上板反馈：`v0.5-ti60-debug-r1` 的 JTAG `.bit` 下载后，实时摄像头 HDMI 与 COM8 控制正常；OpenOCD 可识别 Ti60 TAP，但访问 Sapphire DMI 超时。当前进行阶段 6 的“CPU 调试链路定位”，未完成 ELF 加载与三组 INT8 板上自检。见 [DMI 排查记录](docs/05_experiments/v0.5/jtag_dmi_diagnostics.md)。
+
 | 主题 | 文件 |
 |---|---|
 | 环境与启动 | [环境说明](docs/01_setup/environment.md) |

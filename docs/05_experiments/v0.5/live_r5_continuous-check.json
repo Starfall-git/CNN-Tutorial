@@ -1,0 +1,32 @@
+{
+  "magic": 1196185137,
+  "abi_version": 1,
+  "stage": 6,
+  "error": 0,
+  "clint_hz": 96000000,
+  "arena_used": 84140,
+  "completed": 431,
+  "published": 431,
+  "frame": 7195,
+  "predicted_class": 1,
+  "invoke_ticks": 6782004,
+  "copy_ticks": 209617,
+  "period_ticks": 6994206,
+  "input_checksum": 2815573909,
+  "input_min": 27,
+  "input_max": 255,
+  "capture_errors": 0,
+  "publish_busy": 0,
+  "requested": 1,
+  "pause_after_completed": 0,
+  "output": [
+    4,
+    74,
+    -93
+  ],
+  "apb": [
+    431,
+    1,
+    7199
+  ]
+}

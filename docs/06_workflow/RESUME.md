@@ -1,3 +1,19 @@
+# 2026-10-06 最新恢复点：r5动态链路已上板
+
+用户已确认r4 3/3通过并要求继续。r5已临时JTAG下载并运行实际相机推理。以本节为准，下文为历史。
+
+- 工程：CNN-Tutorial-FPGA/artifacts/evsoc-live-r5/Ti60_AR0135.xml；发布包deliverables/v0.5-ti60-live-r5.zip。54文件校验通过。
+- 固件：artifacts/evsoc-system-r1/embedded_sw/SapphireSoc/software/standalone/evsoc_tinyml_gesture_live。源码生成器tools/prepare_live_firmware.py，官方make需要-j8 BSP=efinix/EfxSapphireSoc all。
+- XLR59185/RAM244/DSP57，96MHz +0.322ns；JTAG两跨域负裕量仍未签核。
+- 灰度快照64×64，中心512×512最近邻；APB1+0x40配置、+0x1000数据。采集仿真4118次检查通过，新封装与旧端点UART隔离仿真通过。
+- 板上记录artifacts/evsoc-live-r5/board-live-r1：final-sample*.json/bin为可靠保留输入，输出[5,70,-92]与TF2.15.1 BUILTIN_REF完全一致。早期first-input读取Invoke后被复用张量，校验失败，不能作为有效输入证据；已加专用调试副本修复。
+- continuous-check：431次推理/提交，无capture_errors/publish_busy，周期6994206ticks/96MHz≈72.856ms。uart-controls.json验证禁用推理计数746保持不变，重新开推理但关叠加时计数增至802。最后启用两者。
+- 当前OpenOCD由本轮启动，官方配置，可能仍占3333/FT232H。CPU正常运行应stage4等待或5–7推理，pause_after_completed=0；只在JTAG核对时设非0使stage8保留一致输入输出。
+- 已异步请用户确认HDMI实时画面、中央彩框/P/R/S；尚无反馈。保持100%缩放、不裁剪；三类模型无无手类，固定ROI非检测框。阶段6不勾选，不合并。下一步根据视觉反馈调试Overlay与实拍识别，收集多手势数据/长时间稳定性，改善至15FPS与时序签核。
+- 原fpga-w.-codex未修改。用户outflow/Ti60_AR0135.tcl.out及旧r3.1草稿未纳入本次提交。
+
+---
+
 # 恢复工作记录
 
 按用户要求，当前版本同步后暂停，等待上板反馈。用户已授权使用credits继续过本次紧急排查；不要将旧额度记录当作当前额度。无活动编译或调试进程，agent启动的OpenOCD已停止，下载器已释放。

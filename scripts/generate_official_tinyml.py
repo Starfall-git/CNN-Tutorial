@@ -16,7 +16,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def generate(generator, model, output):
+def generate(generator, model, output, in_parallel=4, out_parallel=4):
     generator, model, output = (Path(p).resolve() for p in (generator, model, output))
     output.relative_to((ROOT / "artifacts").resolve())
     if output.exists():
@@ -35,10 +35,11 @@ def generate(generator, model, output):
     window.model_file = str(model)
     window.file.setText(str(model))
     # Conservative first candidate; measured timing/resource reports decide later changes.
-    for name in ("CONV_DEPTHW_STD_IN_PARALLEL", "CONV_DEPTHW_STD_OUT_PARALLEL"):
-        vendor.p2[name]["qval"].setValue(4)
+    for name, value in (("CONV_DEPTHW_STD_IN_PARALLEL", in_parallel),
+                        ("CONV_DEPTHW_STD_OUT_PARALLEL", out_parallel)):
+        vendor.p2[name]["qval"].setValue(value)
     analyzer = generator.parent / "bin/tflite.exe"
-    probe = subprocess.run([str(analyzer), str(model), "4", "4", "128"],
+    probe = subprocess.run([str(analyzer), str(model), str(in_parallel), str(out_parallel), "128"],
                            capture_output=True, timeout=120, check=True)
     (output / "analyzer.log").write_bytes(probe.stdout + probe.stderr)
     window.parse_model()
@@ -74,5 +75,7 @@ if __name__ == "__main__":
     parser.add_argument("--generator", type=Path, default=ROOT / "refs/TinyML/upstream-2026.1/tools/tinyml_generator/tinyml_generator.py")
     parser.add_argument("--model", type=Path, default=ROOT / "artifacts/v0.3-int8/gesture_int8.tflite")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--in-parallel", type=int, choices=range(1,129), default=4)
+    parser.add_argument("--out-parallel", type=int, choices=range(1,129), default=4)
     args = parser.parse_args()
-    generate(args.generator, args.model, args.output)
+    generate(args.generator, args.model, args.output, args.in_parallel, args.out_parallel)

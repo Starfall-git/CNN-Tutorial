@@ -1,0 +1,28 @@
+{
+  "top_integrated": true,
+  "map": "PASS",
+  "interface": "PASS",
+  "pnr": "PASS; session49440 exit0, 161 seconds",
+  "timing_signed_off": false,
+  "programmed": false,
+  "configuration": "2x2",
+  "xlr": 57695,
+  "xlr_capacity": 60800,
+  "resources": {
+    "LUT4": 35399,
+    "FF": 26944,
+    "DSP48": 53,
+    "RAM10": 233
+  },
+  "model_sha256": "7891518a9b70ec6b3be8649123651780ce87ede1e69a9a49c394c17d203a0baa",
+  "files": {
+    "example_top.v": "6753222fe1dc0ff2b510cc3cbfea654a89c72e2d5e4a6e8ee24557a6d49154c9",
+    "Ti60_AR0135.xml": "8d22182c53f364dcdf43370b705e47ae6a3e89e1f1efa683c610d18748a284b5",
+    "Ti60_AR0135.pt.sdc": "819f59c40b750cbc147c579ab70811403848283bf7bb18928423e29f8b001857",
+    "outflow\\Ti60_AR0135.map.out": "343729c2b15ac9f36595709dafceebe09eba784c651a28d4ceafe9bc622bc1d8",
+    "outflow\\Ti60_AR0135.res.csv": "553bd412cbc61f995914392c6d4ad70e0a01f50715b48b7ef81773e5b774a9d9",
+    "official_build_report.json": "deb648a93a37e75aefbdb0536dd4ae43f76791b1267650160a7e538fd5785f64",
+    "outflow/Ti60_AR0135.timing.rpt": "3d7158e55a01d21836aee72033842762f8aa7031d3db537bbdfed3dbfde3c242"
+  },
+  "worst_reported_setup_slack_ns": -1.307
+}

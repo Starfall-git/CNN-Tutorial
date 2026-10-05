@@ -1,5 +1,14 @@
 # 恢复工作记录
 
+额度已到96%后保存并暂停，恢复前重新查询。当前所有本地编译结束；最新推送后查教程CI。
+
+## 2026-10-05 最新：真实顶层综合通过，2×2 PNR通过但时序未签核
+
+原视频根目录example_top保留；tools/integrate_evsoc_top.py在artifacts/evsoc-system-r1生成真实顶层，接CPU/TinyML/shared DDR、UART/Overlay、官方USER1 JTAG。配置config/cnn为官方2×2生成，4×4 XLR63390、2×4 XLR61392均超60800；2×2为57695容量通过，LUT35399/FF26944/DSP53/RAM233。map和interface均PASS，PNR session49440已exit0/PASS，161秒，无活动本地编译。最差setup为JTAG→clk_sys -1.307ns，反向-0.384ns；需审计官方JTAG CDC/时钟约束，未签核，不能直接上板。map75172、软件9027均已exit0。SDC有优化掉的端口对象告警，最终时序尚未签核。原source.f必须全登记，RS_MODE/RESHAPE_MODE需同值别名。
+
+新DDR3 BSP软件make通过（7a1f8384 ELF），不再用旧HyperRAM BSP；PIO旧DMA条件编译，官方PLIC A初始化已调用。静态自检不设置固件ready。APB0x28写47535452就绪/0清除，真实SoC要求就绪；APB/UART/reset三测试PASS。无板卡下载。下一步PNR报告、SDC审计/资源余量、720p/FIFO压力与RAW8预处理/软件循环。最新详细top_integration.md和报告；原工程只读，用户outflow修改保留。
+
+
 ## 2026-10-05 最新：官方转换器响应修复与SoC内存封装
 
 新增cnn_axi_full_to_half_duplex.v（官方MIT源码仅加BRESP传递及重命名）、cnn_evsoc_memory.v（真实SoC/转换器/shared DDR实例）。两项新仿真PASS：转换器协议与转换器+共享DDR组合，CPU256拍abort、TinyML R停顿、350次视频读取、越界写DECERR不丢失。封装仅语法编译PASS，尚未接example_top。详细docs/05_experiments/v0.5/evsoc_memory.md/report.json。

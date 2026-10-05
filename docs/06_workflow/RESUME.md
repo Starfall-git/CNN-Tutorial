@@ -223,3 +223,18 @@ FPGA 副本最新提交 59beb73d，已推送 Draft #20：APB影子寄存器原�
 - 最新完成的代码/文档主体提交 `37706db824c5845f4e29d1e47a27ba8d66338dde`，GitHub Actions run 37175295666 success；之后仅补充连接/保存状态。FPGA 分支干净，HEAD `1d7a905a00cf8e0c0403587f89d45e0e73d67df8`。
 - 当前阶段 5.3 交叉编译完成，5.4 仅硬件预检查。后续先只读检查 Efinity `pgm/bin` 工具接口和下载器枚举，再在独立副本准备匹配 C4/DDR3 的 Sapphire 静态工程/BSP。已连接并不代表当前视频 bitstream 内含 Sapphire，不能直接运行当前 ELF。
 - 所有训练、编译任务已退出，无待恢复的训练进程；模型/ELF/日志均已保存。Notebook 05 默认回放。整个目标未完成。
+
+## 2026-10-05 r4 保存并等待额度重置（最新状态）
+
+用户要求“保存现在进度，待额度重置后继续”。当前暂停，恢复前不运行编译或上板。阶段6整体验收和15FPS尚未完成。
+
+- 已完成：4x4 + FC Lite/Disable官方Generator、map/interface/pnr/pgm与板端同ELF对比。XLR分别59801/58819；推理70.7/70.9ms，r3基线173.6ms。推荐FC Disable，余1981 XLR。JTAG跨域时序仍未签核。
+- 原±1差异已独立复现为桌面后端差异：372张默认XNNPACK完全复现旧输出，BUILTIN_REF有46个元素差1，全部类别一致，准确率95.43%。不要覆盖旧golden。板端只验证了3组，不可说372张已上板。
+- 新参考ELF由独立BUILTIN_REF输出生成期望值，严格比较保留，板端stage9/error0/completed3/passed3；模型和输入未改变。r4的Windows PowerShell启动器也实际通过，退出0。
+- 最新调试包：FPGA副本 deliverables/v0.5-ti60-debug-r4.zip（SHA256 a69b2c9e71b76ed2871ef127f71ddf4e889073c9bfc1bb0f29284b2c4b7dd187），58文件哈希与CRC通过。
+- Efinity工程：C:/Users/SteLl1a/Desktop/CNN-Tutorial-FPGA/artifacts/evsoc-4x4-fc-disable-map/Ti60_AR0135.xml。board-comparison-r1是旧ELF对照，board-reference-r1是参考ELF与PowerShell验证记录。
+- 板上最后下载4x4+FC Disable bit，参考ELF测试结束后CPU被halt；OpenOCD已关闭。断电后JTAG配置/ELF可能丢失，下次需下载r4配套bit。禁止写原fpga-w.-codex目录。
+- 工具：教程scripts/audit_int8_backends.py和generate_official_tinyml.py；FPGA tools/prepare_evsoc_resource_candidate.py、prepare_reference_validation.py、measure_evsoc_candidate.py、package_evsoc_resource_r4.py。
+- r3.1是被r4替代的未发布草稿，原未提交tools/package_evsoc_debug_r3.py、docs/CNN_ELF_RUN_R3_1.md及其本地zip保留，不将其当最新发布包。原outflow/Ti60_AR0135.tcl.out用户修改保留。
+- 下次先核对额度、Git/PR与当前硬件连接，阅读docs/05_experiments/v0.5/resource_r4.md。下一项实现原始灰度ROI快照/64x64采样、APB读入、TinyML连续循环、firmware_ready及结果Overlay；目前静态固件不发布实时ready，不能误判host连接状态。需要CDC、帧一致性、资源/时序与动态上板验证。
+- 两个现有Draft PR保持未合并：教程#7，FPGA#20。用户阶段6尚未确认，不能勾选。未开始第二模型。

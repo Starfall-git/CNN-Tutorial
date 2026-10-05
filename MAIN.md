@@ -152,3 +152,5 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 
 
 - 阶段6子步骤（2026-10-05）已完成：**现有ELF在Ti60上运行三组静态INT8推理**。r3修复Sapphire调试复位及CPU字节写地址，五个ELF段回读一致，三组Invoke均完成。严格逐值比较1/3通过，其余两组各差1；单次约174ms（约5.76次/秒，不含视频链路），尚未达到15FPS。详见 [实测与运行说明](docs/05_experiments/v0.5/elf_run_r3.md)。阶段6不勾选、不合并验收，按用户要求同步仓库后暂停，等待上板反馈。
+
+- 阶段6子步骤（2026-10-05恢复后）已完成：**4×4卷积资源优化与三组参考后端严格验证**。4×4+FC Disable为58819 XLR，静态Invoke约70.9ms；独立372张桌面后端对照解释了原两处±1差异，原XNNPACK golden保留。新增BUILTIN_REF验证ELF板端3/3严格通过。详见[r4记录](docs/05_experiments/v0.5/resource_r4.md)。实时采集/Overlay、端到端15FPS和时序签核仍待完成。

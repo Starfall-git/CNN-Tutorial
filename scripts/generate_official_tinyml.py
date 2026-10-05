@@ -16,7 +16,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def generate(generator, model, output, in_parallel=4, out_parallel=4):
+def generate(generator, model, output, in_parallel=4, out_parallel=4, fc_mode="STANDARD"):
     generator, model, output = (Path(p).resolve() for p in (generator, model, output))
     output.relative_to((ROOT / "artifacts").resolve())
     if output.exists():
@@ -43,6 +43,9 @@ def generate(generator, model, output, in_parallel=4, out_parallel=4):
                            capture_output=True, timeout=120, check=True)
     (output / "analyzer.log").write_bytes(probe.stdout + probe.stderr)
     window.parse_model()
+    # The analyzer selects supported operators; choose the desired official
+    # FC implementation only after parsing so its selection is not reset.
+    vendor.p2["FC_MODE"]["qval"].setCurrentText(fc_mode)
     window.tflite_gen = True
     window.generate()
     generated = Path(window.op_path)
@@ -77,5 +80,6 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--in-parallel", type=int, choices=range(1,129), default=4)
     parser.add_argument("--out-parallel", type=int, choices=range(1,129), default=4)
+    parser.add_argument("--fc-mode", choices=("STANDARD", "LITE", "DISABLE"), default="STANDARD")
     args = parser.parse_args()
-    generate(args.generator, args.model, args.output, args.in_parallel, args.out_parallel)
+    generate(args.generator, args.model, args.output, args.in_parallel, args.out_parallel, args.fc_mode)

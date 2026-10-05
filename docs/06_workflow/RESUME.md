@@ -1,6 +1,21 @@
 # 恢复工作记录
 
-额度已恢复；2026-10-05 本轮最近查询短时已用50%、周已用39%，后续接近99%按用户要求保存暂停。当前无活动本地编译；恢复时重新查询实际额度。
+按用户要求，当前版本同步后暂停，等待上板反馈。用户已授权使用credits继续过本次紧急排查；不要将旧额度记录当作当前额度。无活动编译或调试进程，agent启动的OpenOCD已停止，下载器已释放。
+
+## 2026-10-05 当前暂停点：现有ELF已在Ti60实际执行
+
+- 当前板卡已由agent通过官方工具JTAG下载r3业务bit（未写Flash）。用户此前确认r2 LED0～3为灭、亮、灭、灭；r3复用该映射。原本HDMI实时视频/COM8可连接已由用户确认，不再按旧记录重复排查串口枚举。
+- 硬件候选 `C:/Users/SteLl1a/Desktop/CNN-Tutorial-FPGA/artifacts/evsoc-debug-lanes-r3/Ti60_AR0135.xml`。原 `fpga-w.-codex` 目录未修改。
+- r2将Sapphire外部复位从ai_reset改接全局复位，解决DMI持续busy。r3修复窗口拒绝CPU非16字节对齐地址的问题：官方BmbToAxi4Bridge固定128bit大小但保留字节地址，数据和WSTRB已经按通道对齐。
+- ELF保持SHA256 `694ff2a91c8a9f9811fb32af5479da1799ad969c633c587e5c9d4fba0132ff47`。下载后reset halt，再compare-sections五段全部matched；从0x1000运行后PC停在0x1068 mainDone。不能再使用硬件thbreak，此CPU不支持。
+- 三次完整运行（含最终PowerShell发布入口）均completed=3、passed=1、stage=255、error=5。实际[[11,0,-2],[-1,78,-60],[1,-74,63]]，golden后两组第二项分别79/-75。此时是严格数值比较失败，不是ELF不能运行。未修改golden/断言；±1原因尚未确认。
+- arena_used=84140字节，CLINT96MHz，每次Invoke约174ms（约5.76次/秒，不含视频预处理/Overlay）。不能声称15FPS达标。
+- 交付 `deliverables/v0.5-ti60-debug-r3.zip`，本地已解压同名目录。53文件SHA与ZIP CRC验证通过；start-gdb.ps1执行后退出码2用于明确报告数值不完全一致。必须使用r3 bit；用户下一次可按包内README运行，无需修改原ELF。
+- 官方map/interface/pnr/pgm全PASS，sys setup+0.792ns，JTAG跨域-0.308/-1.297ns，hold无负值，未时序签核。窗口四通道/边界回归及共享DDR347次视频读隔离回归通过。
+- FPGA提交acebb362已推送现有Draft PR20，教程记录已推送Draft PR7，两者描述已更新。阶段6整体仍不勾选；暂停后下一步以用户反馈为准，分析INT8±1、性能，再接入实时预处理与Overlay。原视频根目录用户outflow/Ti60_AR0135.tcl.out改动未纳入提交。
+- 原始证据在r3候选board-run，正式入口：[ELF实测与复现](../05_experiments/v0.5/elf_run_r3.md)。板上CPU最后处于halt，JTAG易失性配置及RAM程序断电不保留。
+
+## 以下为历史记录（以上面的当前暂停点为准）
 
 ## 2026-10-05 最新：调试包已生成，上位机入口补齐，等待业务bit与板上运行确认
 

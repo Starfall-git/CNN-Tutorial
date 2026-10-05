@@ -11,3 +11,8 @@
 后续100 kHz实测仍超时：用户片段中DTMCS=`0x7c71`、DMI持续Busy，与生成RTL的version=1、abits=7、idle=7、dmistat=3对应。已定位并修复诊断脚本的Windows日志路径转义错误，用官方OpenOCD离线echo/shutdown验证日志确实落盘；该修复不代表DMI故障修复。下一步采集从启动开始的完整日志，定位首次请求及复位/跨域响应。用户已明确授权使用credits继续，后续不再仅因普通额度耗尽而停止。
 
 已获得16:22、16:24两次完整日志：初始DTMCS=`0x7071`、dmistat=0，首次向DMCONTROL（DMI地址0x10）写0后即持续Busy。官方生成DebugModule对此写入有直接寄存响应，不要求ELF先运行；应观察ai_reset/debugCd复位和DMI跨域握手。无需重复相同的100 kHz试验。正在等待现有LED校准状态，以确定后续硬件诊断观察点；尚未证明具体硬件根因。
+
+
+## 2026-10-05 后续已定位
+
+r2将Sapphire外部复位接全局后CPU调试恢复；r3修复CPU带字节使能的DDR地址后ELF五段回读一致。启动前reset halt后，现有ELF完成三组静态推理，严格数值比较1/3通过，其余各差1。当前不是DMI连通故障，详见 [板上实测及复现](elf_run_r3.md)。

@@ -144,4 +144,6 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 
 - 阶段6子步骤：官方AXI响应适配与真实SoC内存封装，组合仿真通过，顶层/综合/上板待完成：[记录](docs/05_experiments/v0.5/evsoc_memory.md)。
 
-- 阶段6子步骤：真实视频顶层接入官方SoC，综合及接口通过；2×2容量通过，PNR/时序待验收：[集成记录](docs/05_experiments/v0.5/top_integration.md)。
+- 阶段6子步骤：真实视频顶层接入官方SoC，综合及接口通过；2×2容量及PNR通过，时序未签核：[集成记录](docs/05_experiments/v0.5/top_integration.md)。
+
+- 阶段6子步骤已完成（2026-10-05）：[v0.5-ti60-debug-r1 上板调试包](docs/05_experiments/v0.5/debug_release.md)，包含官方生成的JTAG `.bit`、匹配的DDR3 ELF、JTAG可读静态自检状态、OpenOCD/GDB脚本，以及“TinyML 手势”GUI入口。33项相关host测试和48个包内文件哈希校验通过。用户首次编程截图为SPI Active using JTAG Bridge；COM8可打开但FPGA握手超时，需重新配置业务bit确认。尚未取得板上三组推理/实时Overlay/FPS结果，阶段6整体验收未完成。

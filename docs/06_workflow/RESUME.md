@@ -1,6 +1,20 @@
 # 恢复工作记录
 
-额度已到96%后保存并暂停，恢复前重新查询。当前所有本地编译结束；最新推送后查教程CI。
+额度已恢复；2026-10-05 本轮最近查询短时已用50%、周已用39%，后续接近99%按用户要求保存暂停。当前无活动本地编译；恢复时重新查询实际额度。
+
+## 2026-10-05 最新：调试包已生成，上位机入口补齐，等待业务bit与板上运行确认
+
+本轮官方PGM PASS，artifacts/evsoc-system-r1/outflow/Ti60_AR0135.bit 已生成。固定发布包在 FPGA副本 deliverables/v0.5-ti60-debug-r1.zip，解压在 artifacts/releases/v0.5-ti60-debug-r1。SHA见docs/05_experiments/v0.5/debug_release_report.json，48文件哈希和zip内容校验PASS。新增tools/package_evsoc_debug.py拒绝覆盖既有发布；当前map/res/timing报告与历史top_integration_report文件哈希不同，已重新读取实际报告确认相同资源/17条setup与17条hold关系、仅两条JTAG跨域负裕量，manifest记录本次审核与当前文件hash，未伪称历史报告逐字节匹配。
+
+ELF增加cnn_debug_status和cnn_debug_done断点，官方make成功，ELF SHA694ff2a91c8a9f9811fb32af5479da1799ad969c633c587e5c9d4fba0132ff47。D-cache状态发布沿用官方0x500f指令，仍是静态3样本，不设置firmware_ready。旧ELF在候选history/static-before-debug。包内脚本只准备未执行，未由agent下载/擦Flash/启动OpenOCD。GDB离线符号检查通过，有本机编码警告但符号可读。
+
+用户报告自己编译并下载后host无法连接，截图明确为SPI Active using JTAG Bridge + hex，控制台只显示到擦除Flash。Windows端口开始为空，后枚举CH340 COM8；agent只读查询确认COM8可打开但GET_STATUS超时。已告知等Flash操作完成后选JTAG + 业务bit，不能把桥接镜像运行当作业务设计运行。Build只生成ELF，还需OpenOCD加载并Resume；纯FPGA UART无需ELF应能握手。不要继续说串口未枚举，不要误报已恢复连接或推理成功。用户尚未反馈重新配置bit后的结果。
+
+host新增“图像→TinyML 手势”入口/独立面板，支持请求与实际状态、未就绪禁用推理、旧固件能力门控、通信失败不虚报成功。旧GUI须重启加载更新。连接错误区分COM打不开与握手超时。4项新GUI+5CNN+14原host+8camera+2advanced=33项分套件PASS。最初混跑有Tk GC线程问题，新GUI测试tearDown在主线程清理后单套件PASS；旧混跑session24914已exit1，不能再当活动会话。
+
+下一步先确认业务bit实际运行下的UART/HDMI，再使用包内官方OpenOCD/GDB启动脚本加载ELF运行三组静态推理，收集cnn_debug_status/PC/异常寄存器。同时尚需RAW8 crop/resize、实时摄像头固件循环、720p压力及JTAG CDC审计。原fpga-w.-codex严格只读，副本outflow/Ti60_AR0135.tcl.out用户改动保留，阶段6/7未完成。用户偏好简单任务用6-sol，实际模型选择需遵循当前会话能力，不能虚称已切换。
+
+教程原ee84e46 CI run37261177254成功，本轮新提交CI需按新SHA确认。
 
 ## 2026-10-05 最新：真实顶层综合通过，2×2 PNR通过但时序未签核
 

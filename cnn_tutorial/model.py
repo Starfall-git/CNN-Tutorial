@@ -4,7 +4,7 @@ from torch import nn
 
 
 class GrayGestureCNN(nn.Module):
-    """Input NCHW float32 in [0, 1], output three unnormalized class scores.
+    """Input NCHW float32 in [0, 1], output configured class scores.
 
     Fixed 64x64 input. Explicit padding avoids PyTorch/TF SAME ambiguity.
     A 4x4 pooled grid retains finger location at a small parameter cost.

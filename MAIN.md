@@ -29,6 +29,7 @@
 | 环境与启动 | [环境说明](docs/01_setup/environment.md) |
 | 模型与关键源码 | [灰度 CNN](docs/02_model/gray_gesture_cnn.md) |
 | 数据、训练、验证与云端流程 | [训练说明](docs/03_training/data_and_evaluation.md) |
+| r5 实拍问题后的四类采集准备 | [AR0135/HDMI 采集与会话分组](docs/03_training/live_r6_capture.md) |
 | 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
 | INT8 转换与 golden 回放 | [量化教程](docs/04_deployment/int8_conversion.md) |
 | FPGA 接入与独立副本 | [阶段 5 实施记录](docs/04_deployment/fpga_bringup.md) |

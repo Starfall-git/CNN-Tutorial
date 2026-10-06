@@ -103,15 +103,17 @@ class GestureDataset(Dataset):
     def __init__(self, root, split, augment=False, manifest_file="manifest.json", augment_policy="basic"):
         self.root = Path(root)
         manifest = json.loads((self.root / manifest_file).read_text(encoding="utf-8"))
-        if manifest["classes"] != list(CLASSES):
+        allowed = (list(CLASSES), list(CLASSES) + ["empty"])
+        if manifest["classes"] not in allowed:
             raise ValueError("Manifest class order mismatch")
+        self.classes = tuple(manifest["classes"])
         self.rows = [row for row in manifest["rows"] if row["split"] == split]
         if not self.rows:
             raise ValueError(f"Empty split: {split}")
         if augment and split != "train":
             raise ValueError("Augmentation is allowed only on the training split")
         self.augment = augment
-        if augment_policy not in ("basic", "affine"):
+        if augment_policy not in ("basic", "affine", "camera"):
             raise ValueError("Unknown augmentation policy")
         self.augment_policy = augment_policy
         # Small dataset: cache decoded grayscale images, avoid repeated disk IO.
@@ -131,6 +133,13 @@ class GestureDataset(Dataset):
             if self.augment_policy == "affine":
                 image = affine_augment(image)
                 image = ImageEnhance.Contrast(image).enhance(random.uniform(0.7, 1.3))
+                image = ImageEnhance.Brightness(image).enhance(random.uniform(0.7, 1.3))
+            elif self.augment_policy == "camera":
+                # Preserve a realistic border color for dark AR0135 scenes.
+                fill = int(np.median(np.asarray(image)))
+                image = image.rotate(random.uniform(-10, 10),
+                                     resample=Image.Resampling.BILINEAR, fillcolor=fill)
+                image = ImageEnhance.Contrast(image).enhance(random.uniform(0.75, 1.3))
                 image = ImageEnhance.Brightness(image).enhance(random.uniform(0.7, 1.3))
             else:
                 image = image.rotate(random.uniform(-12, 12), resample=Image.Resampling.BILINEAR, fillcolor=255)

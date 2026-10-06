@@ -1,0 +1,46 @@
+{
+  "fpga_commit": "3d10d636",
+  "top_integrated": false,
+  "hardware_verified": false,
+  "tests": {
+    "cnn_axi_transaction_buffer": {
+      "pass": true,
+      "log_sha256": "b09c20ca07381c2580c21588f0fed19964e13a2b8307b660ca24fe21bf5a7577",
+      "sha256": {
+        "src/cnn/cnn_axi_transaction_buffer.v": "c79ebdc097680f01fbaa99a0dd5ac52d281e302bfc60931baefc8c5e6b8f7600",
+        "testbench/cnn_axi_transaction_buffer_tb.sv": "6b83dffe8df7f01a46b619f9ce7d13eef239624329b8541f2c522fa975a6fddc",
+        "tools/run_cnn_axi_transaction_buffer_sim.py": "18b8ff97b6f0f25f58fec2c5670c050d4991f031462c481676b83322725d53f8"
+      }
+    },
+    "cnn_axi_isolated_port": {
+      "pass": true,
+      "log_sha256": "dc06fb5e69b4044e9fc1fe5a48511d02f1c8f23861abd61aefe3296774c4d961",
+      "sha256": {
+        "src/cnn/cnn_axi_isolated_port.v": "476d11e8e4baaabfd593632980d2b9a4af467118f9241e7c9632b3f819f8c953",
+        "testbench/cnn_axi_isolated_port_tb.sv": "436c51e54f2264e3f14b74938479108c32c000917595d743d2fbd64366ea903b",
+        "tools/run_cnn_axi_isolated_port_sim.py": "613fc6cce1bad2f33c7a6efbf64d9afc9ef94046c97498527d30cba054b7c495"
+      }
+    },
+    "cnn_ddr_arbiter": {
+      "pass": true,
+      "log_sha256": "e754af14f1933b43027708841baa41a60fdb9a895c7c2dfe6a913e7340b9f07e",
+      "sha256": {
+        "src/cnn/cnn_ddr_arbiter.v": "19af28437001cf56dc929f3bb594e44261d9c955e2e68bd0876590d52dbe9a40",
+        "testbench/cnn_ddr_arbiter_tb.sv": "d17011515bc739dffb4d4b9003ee6653516ea641dcca47cab86499d24488a914",
+        "tools/run_cnn_ddr_arbiter_sim.py": "448878ab8da1dfcb933b6d56e79675d307cd6e02aeb9ab98cefcc7d8fc0164dd"
+      }
+    },
+    "cnn_shared_ddr": {
+      "pass": true,
+      "log_sha256": "738ea2af5f8570915f3a5664c882ab1030283fec44aec5a42436c9f6bc84ce8a",
+      "sha256": {
+        "src/cnn/cnn_shared_ddr.v": "69b217772ca2c026d0b3edc6093adc3bdf179bff3c56903d85cabf65734c2780",
+        "testbench/cnn_shared_ddr_tb.sv": "1ae2441376051ff68eb06231d5da485c3338d1d171af3d7097ff5a250e65a59f",
+        "tools/run_cnn_shared_ddr_sim.py": "a568997af741e24d9c30ed94220a5abe0a6729d306925bb5ced51833b051287a"
+      }
+    }
+  },
+  "shared_dependencies_sha256": {
+    "src/cnn/cnn_axi_window.v": "83e65367ca1d5fb87bd04b026f740c4f7e29d2a5563b99b89d7019533c4f815f"
+  }
+}

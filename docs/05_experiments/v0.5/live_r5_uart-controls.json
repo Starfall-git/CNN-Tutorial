@@ -1,0 +1,22 @@
+{
+  "inference_off_overlay_on": {
+    "code": 0,
+    "applied": 2,
+    "requested": 2,
+    "available": true
+  },
+  "inference_on_overlay_off": {
+    "code": 0,
+    "applied": 1,
+    "requested": 1,
+    "available": true
+  },
+  "both_on": {
+    "code": 0,
+    "applied": 3,
+    "requested": 3,
+    "available": true
+  },
+  "disable_stops_new_inference": true,
+  "overlay_independent": true
+}

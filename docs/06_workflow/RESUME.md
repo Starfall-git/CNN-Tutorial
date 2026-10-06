@@ -1,4 +1,131 @@
+# 2026-10-06 用户上板视觉反馈与额度暂停点
+
+用户确认 r5 已成功运行，实时 HDMI 叠加可见，动态 FPGA/TinyML 技术路线可行。五张照片表明三类识别效果差，尤其剪刀常误判为布；复杂背景、手臂、拍摄视角与训练集差异明显。不能再称真实场景准确率已验证。用户建议加入无手/空类并改善训练集。
+
+当前 Codex 5 小时额度已达100%，用户此前明确要求额度用完前保存并停止，故本次只记状态，不做重训/改固件。下一轮恢复先审查 data/rps/manifest*.json、scripts/prepare_data.py、train.py、convert_int8.py、部署输入最近邻预处理；整理现场数据采集与四类标注方案。单独记录阶段6硬件链路视觉可用与识别效果待优化。新四类输出将需要同步模型输出维度、tinyml参数、RISC-V固件、APB类别编码、Overlay颜色/空类无框；先做离线受控评估，再上板。注意 HDMI截图含框字母，不可直接作为训练原图；优先采集原始AR0135帧或将ROI内叠加部分排除。
+
+此前FPGA Draft PR20、教程Draft PR7已更新；不要修改原fpga-w.-codex本地目录。当前阶段6尚未由用户正式勾选。已有异步问题询问HDMI显示情况，用户本条已确认，不需再问。
+
+---
+
+# 2026-10-06 最新恢复点：r5动态链路已上板
+
+发布脚本实际板测PASS：五个ELF段回读一致，CNN_LIVE=1196185137 4 0 0，CPU保持运行等待开关。最后COM8被其他进程占用，agent未重新开启开关，请用户在已连接的GUI中开启推理/叠加。agent启动的OpenOCD已shutdown释放下载器。
+
+
+用户已确认r4 3/3通过并要求继续。r5已临时JTAG下载并运行实际相机推理。以本节为准，下文为历史。
+
+- 工程：CNN-Tutorial-FPGA/artifacts/evsoc-live-r5/Ti60_AR0135.xml；发布包deliverables/v0.5-ti60-live-r5.zip。54文件校验通过。
+- 固件：artifacts/evsoc-system-r1/embedded_sw/SapphireSoc/software/standalone/evsoc_tinyml_gesture_live。源码生成器tools/prepare_live_firmware.py，官方make需要-j8 BSP=efinix/EfxSapphireSoc all。
+- XLR59185/RAM244/DSP57，96MHz +0.322ns；JTAG两跨域负裕量仍未签核。
+- 灰度快照64×64，中心512×512最近邻；APB1+0x40配置、+0x1000数据。采集仿真4118次检查通过，新封装与旧端点UART隔离仿真通过。
+- 板上记录artifacts/evsoc-live-r5/board-live-r1：final-sample*.json/bin为可靠保留输入，输出[5,70,-92]与TF2.15.1 BUILTIN_REF完全一致。早期first-input读取Invoke后被复用张量，校验失败，不能作为有效输入证据；已加专用调试副本修复。
+- continuous-check：431次推理/提交，无capture_errors/publish_busy，周期6994206ticks/96MHz≈72.856ms。uart-controls.json验证禁用推理计数746保持不变，重新开推理但关叠加时计数增至802。最后启用两者。
+- 当前OpenOCD由本轮启动，官方配置，可能仍占3333/FT232H。CPU正常运行应stage4等待或5–7推理，pause_after_completed=0；只在JTAG核对时设非0使stage8保留一致输入输出。
+- 已异步请用户确认HDMI实时画面、中央彩框/P/R/S；尚无反馈。保持100%缩放、不裁剪；三类模型无无手类，固定ROI非检测框。阶段6不勾选，不合并。下一步根据视觉反馈调试Overlay与实拍识别，收集多手势数据/长时间稳定性，改善至15FPS与时序签核。
+- 原fpga-w.-codex未修改。用户outflow/Ti60_AR0135.tcl.out及旧r3.1草稿未纳入本次提交。
+
+---
+
 # 恢复工作记录
+
+按用户要求，当前版本同步后暂停，等待上板反馈。用户已授权使用credits继续过本次紧急排查；不要将旧额度记录当作当前额度。无活动编译或调试进程，agent启动的OpenOCD已停止，下载器已释放。
+
+## 2026-10-05 当前暂停点：现有ELF已在Ti60实际执行
+
+- 当前板卡已由agent通过官方工具JTAG下载r3业务bit（未写Flash）。用户此前确认r2 LED0～3为灭、亮、灭、灭；r3复用该映射。原本HDMI实时视频/COM8可连接已由用户确认，不再按旧记录重复排查串口枚举。
+- 硬件候选 `C:/Users/SteLl1a/Desktop/CNN-Tutorial-FPGA/artifacts/evsoc-debug-lanes-r3/Ti60_AR0135.xml`。原 `fpga-w.-codex` 目录未修改。
+- r2将Sapphire外部复位从ai_reset改接全局复位，解决DMI持续busy。r3修复窗口拒绝CPU非16字节对齐地址的问题：官方BmbToAxi4Bridge固定128bit大小但保留字节地址，数据和WSTRB已经按通道对齐。
+- ELF保持SHA256 `694ff2a91c8a9f9811fb32af5479da1799ad969c633c587e5c9d4fba0132ff47`。下载后reset halt，再compare-sections五段全部matched；从0x1000运行后PC停在0x1068 mainDone。不能再使用硬件thbreak，此CPU不支持。
+- 三次完整运行（含最终PowerShell发布入口）均completed=3、passed=1、stage=255、error=5。实际[[11,0,-2],[-1,78,-60],[1,-74,63]]，golden后两组第二项分别79/-75。此时是严格数值比较失败，不是ELF不能运行。未修改golden/断言；±1原因尚未确认。
+- arena_used=84140字节，CLINT96MHz，每次Invoke约174ms（约5.76次/秒，不含视频预处理/Overlay）。不能声称15FPS达标。
+- 交付 `deliverables/v0.5-ti60-debug-r3.zip`，本地已解压同名目录。53文件SHA与ZIP CRC验证通过；start-gdb.ps1执行后退出码2用于明确报告数值不完全一致。必须使用r3 bit；用户下一次可按包内README运行，无需修改原ELF。
+- 官方map/interface/pnr/pgm全PASS，sys setup+0.792ns，JTAG跨域-0.308/-1.297ns，hold无负值，未时序签核。窗口四通道/边界回归及共享DDR347次视频读隔离回归通过。
+- FPGA提交acebb362已推送现有Draft PR20，教程记录已推送Draft PR7，两者描述已更新。阶段6整体仍不勾选；暂停后下一步以用户反馈为准，分析INT8±1、性能，再接入实时预处理与Overlay。原视频根目录用户outflow/Ti60_AR0135.tcl.out改动未纳入提交。
+- 原始证据在r3候选board-run，正式入口：[ELF实测与复现](../05_experiments/v0.5/elf_run_r3.md)。板上CPU最后处于halt，JTAG易失性配置及RAM程序断电不保留。
+
+## 以下为历史记录（以上面的当前暂停点为准）
+
+## 2026-10-05 最新：调试包已生成，上位机入口补齐，等待业务bit与板上运行确认
+
+本轮官方PGM PASS，artifacts/evsoc-system-r1/outflow/Ti60_AR0135.bit 已生成。固定发布包在 FPGA副本 deliverables/v0.5-ti60-debug-r1.zip，解压在 artifacts/releases/v0.5-ti60-debug-r1。SHA见docs/05_experiments/v0.5/debug_release_report.json，48文件哈希和zip内容校验PASS。新增tools/package_evsoc_debug.py拒绝覆盖既有发布；当前map/res/timing报告与历史top_integration_report文件哈希不同，已重新读取实际报告确认相同资源/17条setup与17条hold关系、仅两条JTAG跨域负裕量，manifest记录本次审核与当前文件hash，未伪称历史报告逐字节匹配。
+
+ELF增加cnn_debug_status和cnn_debug_done断点，官方make成功，ELF SHA694ff2a91c8a9f9811fb32af5479da1799ad969c633c587e5c9d4fba0132ff47。D-cache状态发布沿用官方0x500f指令，仍是静态3样本，不设置firmware_ready。旧ELF在候选history/static-before-debug。包内脚本只准备未执行，未由agent下载/擦Flash/启动OpenOCD。GDB离线符号检查通过，有本机编码警告但符号可读。
+
+用户报告自己编译并下载后host无法连接，截图明确为SPI Active using JTAG Bridge + hex，控制台只显示到擦除Flash。Windows端口开始为空，后枚举CH340 COM8；agent只读查询确认COM8可打开但GET_STATUS超时。已告知等Flash操作完成后选JTAG + 业务bit，不能把桥接镜像运行当作业务设计运行。Build只生成ELF，还需OpenOCD加载并Resume；纯FPGA UART无需ELF应能握手。不要继续说串口未枚举，不要误报已恢复连接或推理成功。用户尚未反馈重新配置bit后的结果。
+
+host新增“图像→TinyML 手势”入口/独立面板，支持请求与实际状态、未就绪禁用推理、旧固件能力门控、通信失败不虚报成功。旧GUI须重启加载更新。连接错误区分COM打不开与握手超时。4项新GUI+5CNN+14原host+8camera+2advanced=33项分套件PASS。最初混跑有Tk GC线程问题，新GUI测试tearDown在主线程清理后单套件PASS；旧混跑session24914已exit1，不能再当活动会话。
+
+下一步先确认业务bit实际运行下的UART/HDMI，再使用包内官方OpenOCD/GDB启动脚本加载ELF运行三组静态推理，收集cnn_debug_status/PC/异常寄存器。同时尚需RAW8 crop/resize、实时摄像头固件循环、720p压力及JTAG CDC审计。原fpga-w.-codex严格只读，副本outflow/Ti60_AR0135.tcl.out用户改动保留，阶段6/7未完成。用户偏好简单任务用6-sol，实际模型选择需遵循当前会话能力，不能虚称已切换。
+
+教程原ee84e46 CI run37261177254成功，本轮新提交CI需按新SHA确认。
+
+## 2026-10-05 最新：真实顶层综合通过，2×2 PNR通过但时序未签核
+
+原视频根目录example_top保留；tools/integrate_evsoc_top.py在artifacts/evsoc-system-r1生成真实顶层，接CPU/TinyML/shared DDR、UART/Overlay、官方USER1 JTAG。配置config/cnn为官方2×2生成，4×4 XLR63390、2×4 XLR61392均超60800；2×2为57695容量通过，LUT35399/FF26944/DSP53/RAM233。map和interface均PASS，PNR session49440已exit0/PASS，161秒，无活动本地编译。最差setup为JTAG→clk_sys -1.307ns，反向-0.384ns；需审计官方JTAG CDC/时钟约束，未签核，不能直接上板。map75172、软件9027均已exit0。SDC有优化掉的端口对象告警，最终时序尚未签核。原source.f必须全登记，RS_MODE/RESHAPE_MODE需同值别名。
+
+新DDR3 BSP软件make通过（7a1f8384 ELF），不再用旧HyperRAM BSP；PIO旧DMA条件编译，官方PLIC A初始化已调用。静态自检不设置固件ready。APB0x28写47535452就绪/0清除，真实SoC要求就绪；APB/UART/reset三测试PASS。无板卡下载。下一步PNR报告、SDC审计/资源余量、720p/FIFO压力与RAW8预处理/软件循环。最新详细top_integration.md和报告；原工程只读，用户outflow修改保留。
+
+
+## 2026-10-05 最新：官方转换器响应修复与SoC内存封装
+
+新增cnn_axi_full_to_half_duplex.v（官方MIT源码仅加BRESP传递及重命名）、cnn_evsoc_memory.v（真实SoC/转换器/shared DDR实例）。两项新仿真PASS：转换器协议与转换器+共享DDR组合，CPU256拍abort、TinyML R停顿、350次视频读取、越界写DECERR不丢失。封装仅语法编译PASS，尚未接example_top。详细docs/05_experiments/v0.5/evsoc_memory.md/report.json。
+
+下一步直接使用cnn_evsoc_memory接现有video AWARMux后端口和DdrCtrl唯一输入，父层须处理AI复位等待ai_quiescent、JTAG/SPI/UART、IP/XML/SDC。不能把当前封装当完整顶层；无综合/板上结果。生成器会覆盖派生封装，人工改动前先保存。原fpga-w.-codex只读，副本outflow用户改动保留。教程023606c CI37228805738已success，新提交CI另查。无本地运行中工具、无下载板卡，阶段6/7未完成。额度接近上限时保存并停止，恢复时先查询实际额度。
+
+
+## 2026-10-05 最新：共享DDR事务层组合验证已通过
+
+FPGA最新3d10d636已推送Draft20。新增cnn_axi_transaction_buffer、cnn_axi_isolated_port、cnn_ddr_arbiter、cnn_shared_ddr及4个runner/testbench。AI先完整缓存写突发、为读预留完整空间；独立ai_abort取消未发出事务、排空已发出事务，窗口/缓存/仲裁都不能接CPU独立复位。三路端口0视频物理地址，1/2为CPU/TinyML逻辑窗口。
+
+四项ModelSim仿真通过，包含256拍缓冲、隔离窗口、12事务轮询、CPU写中abort与TinyML不接读结果时的共享通路。组合测试347次视频读取继续完成（不是帧数/FPS）。证据docs/05_experiments/v0.5/shared_ddr_report.json。共享测试初版negedge TB ready竞争，改posedge采握手后通过，RTL未改来迎合测试。无活动仿真/编译，无下载板卡。
+
+下一步实际top：将cpu raw combined和TinyML full AXI接入这两路，视频现有AWARMux后接端口0，DdrCtrl唯一驱动接共享输出。官方axi_full_to_half_duplex.v的s_axi_bresp固定0，不能直接使用，否则吞掉窗口DECERR；应保留许可的小改版或正确适配并测试。然后接cnn_soc_subsystem、AI排空复位、JTAG/SPI/UART与IP依赖，走Efinity综合。官方加密IP ModelSim仍不支持，不造假模型代替。
+
+完整720p真实reader/writer/FIFO压力、BRAM推断/资源、时序/布局布线、RAW8预处理和软件循环/板上验证仍待完成。原fpga-w.-codex只读，副本用户outflow改动保留。阶段6/7保持未完成。
+
+
+## 2026-10-05 最新：额度已恢复，SoC外层与AI内存窗口已提交
+
+FPGA最新8bbc931e（Draft20），新增cnn_soc_subsystem.v：实际Sapphire78端口和TinyML35个AXI端口完整连接，自定义指令/中断/APB1端点有真实实例代码；尚未接example_top。生成器由实际公开声明生成，用户编辑后拒绝覆盖。新cnn_axi_window.v进行[0x1000,0x04001000)→[0x04000000,0x08000000)受限转换，非法全突发DECERR，无DDR访问。窗口数字仿真与外层语法编译PASS。
+
+重要：完整官方Sapphire/TinyML的ModelSim编译失败（加密保护区域语法错误exit2），不是完整SoC仿真通过；后续通过Efinity官方综合验证，不换假IP冒充。证据docs/05_experiments/v0.5/subsystem_report.json。没有运行中的工具任务，未下载板卡。
+
+下一步实际集成：CPU/加速器两路统一地址窗口，完整写突发/读响应缓存、有界DDR仲裁、ID回传和AI复位排空；随后接example_top、Sapphire/TinyML和端点、注册官方依赖并做Efinity综合。窗口单独复位不能丢在途DDR事务；窗口本身不保证AI停顿不影响视频。SoC调试UART与现有命令UART不得并驱动TX，需决定调试通道或复用。
+
+本轮开始额度短时1%、周0%（均为已用）已恢复；继续工作中，不沿用旧额度100%停止状态。教程PR7最新状态需按最新提交检查。原fpga-w.-codex只读，副本用户outflow改动保留。阶段6/7仍未完成。
+
+
+## 2026-10-05 最新：真实视频工程96MHz Sapphire生成成功，额度保存
+
+FPGA提交06b1b668已推送Draft #20。候选目录 artifacts/evsoc-system-r1 从独立副本的实际视频顶层/XML/peri/DDR IP准备，官方source保持原内容。已确认 example_top 的 w_ddr3_ui_clk=clk_sys=96MHz，不是DDR物理时钟。官方IPM API生成Sapphire成功、exit0，session87651已结束，无需等待或重启。RTL/模板/匹配BSP及日志哈希见 docs/05_experiments/v0.5/sapphire_system_generation.json。
+
+配置：CPU/peripheral96MHz、128位combined DDR、APB0禁用/APB1启用，原自定义指令保留；DDR逻辑窗口64MiB。计划AI物理64–128MiB，保护低48MiB视频区，但地址转换尚未实现，不能直接下载当前软件或称为整机可运行。原DdrCtrl行列/物理时钟未改，候选XML只登记了Sapphire，example_top尚未实例化。
+
+下一步必须核对模板与官方edge_vision_soc实例，实施Sapphire/TinyML子系统、CPU和加速器一致地址转换、受限DDR仲裁、ID返回及APB endpoint接线，再做RAW8预处理/坐标映射。不要再退回旧静态r3路线或重复生成同一IP。教程PR7上轮6c0e813 CI成功。此前任何“IP生成正在运行”已失效。
+
+短时额度到95%时开始保存，继续前重新查询；用户要求接近1%剩余即暂停。原fpga-w.-codex只读，副本outflow/Ti60_AR0135.tcl.out用户修改保留。阶段6未完成，无新下载，无板上FPS/arena结果。
+
+
+## 2026-10-05 最新：UART与结果/Overlay端点已组合验证
+
+FPGA最新提交07597651已推送Draft #20。UART CNN_ENABLE默认为0，新50/51命令与cnn_video_endpoint在三时钟组合仿真通过；cpu推理开关和pixel叠加独立，ACK来自实际Overlay enabled寄存器。APB 0x24可读推理允许/online。主机SerialClient已有get_cnn/set_cnn，GUI按钮尚未做。29项host测试、123组几何数据包、旧UART/Overlay/APB回归通过；详见docs/05_experiments/v0.5/uart_endpoint.md与报告。
+
+旧geometry fixture两处预期过时，旧HEAD也复现，已修正；两项旧runner输出迁移artifacts，运行产生的tracked历史work改动已恢复。FPGA唯一剩余非本轮改动仍是用户outflow/Ti60_AR0135.tcl.out。
+
+教程 Draft PR #7 已附加到聊天，先前bb07dba的CI成功。本轮新推送后需看新SHA的CI。无运行中编译、无下载板卡，阶段6保持未完成。下一步要连接真实example_top与官方Sapphire实例、DDR仲裁和预处理，不能继续只报告模块准备完成。保持原项目只读。
+
+
+## 2026-10-05 最新：PR #4 已合并，APB结果接口通过
+
+教程 PR #4 已按用户授权合并，merge SHA 78997389db3a89efd93998f3f4c8e7abbb273d02（合并前CI成功）。教程当前分支 codex/evsoc-system-integration。阶段1–5用户勾选保留，当前推进阶段6。
+
+FPGA 副本最新提交 59beb73d，已推送 Draft #20：APB影子寄存器原子提交、真实跨域邮箱协议仿真及官方RISC-V发布函数编译通过。证据 docs/05_experiments/v0.5/result_apb_report.json；实现说明在副本 docs/CNN_RESULT_APB.md。不存在活跃编译，尚未下载板卡。
+
+下一步：真正连接Sapphire/APB结果与Overlay及UART控制，再解决共享DDR接口、RAW8预处理、几何映射和匹配BSP。不要把新增接口当成已接入顶层。不要重复训练/改名或重新跑不相关旧构建。仍保留副本 outflow/Ti60_AR0135.tcl.out 用户修改，原 fpga-w.-codex 只读。
+
+此前“PR #4待合并/额度待恢复”均为历史记录；本轮额度短时已用17%、周81%，后续需重新查询，接近1%剩余按用户要求保存停止。
+
 
 ## 最新用户确认与额度保存
 
@@ -125,3 +252,18 @@
 - 最新完成的代码/文档主体提交 `37706db824c5845f4e29d1e47a27ba8d66338dde`，GitHub Actions run 37175295666 success；之后仅补充连接/保存状态。FPGA 分支干净，HEAD `1d7a905a00cf8e0c0403587f89d45e0e73d67df8`。
 - 当前阶段 5.3 交叉编译完成，5.4 仅硬件预检查。后续先只读检查 Efinity `pgm/bin` 工具接口和下载器枚举，再在独立副本准备匹配 C4/DDR3 的 Sapphire 静态工程/BSP。已连接并不代表当前视频 bitstream 内含 Sapphire，不能直接运行当前 ELF。
 - 所有训练、编译任务已退出，无待恢复的训练进程；模型/ELF/日志均已保存。Notebook 05 默认回放。整个目标未完成。
+
+## 2026-10-05 r4 保存并等待额度重置（最新状态）
+
+用户要求“保存现在进度，待额度重置后继续”。当前暂停，恢复前不运行编译或上板。阶段6整体验收和15FPS尚未完成。
+
+- 已完成：4x4 + FC Lite/Disable官方Generator、map/interface/pnr/pgm与板端同ELF对比。XLR分别59801/58819；推理70.7/70.9ms，r3基线173.6ms。推荐FC Disable，余1981 XLR。JTAG跨域时序仍未签核。
+- 原±1差异已独立复现为桌面后端差异：372张默认XNNPACK完全复现旧输出，BUILTIN_REF有46个元素差1，全部类别一致，准确率95.43%。不要覆盖旧golden。板端只验证了3组，不可说372张已上板。
+- 新参考ELF由独立BUILTIN_REF输出生成期望值，严格比较保留，板端stage9/error0/completed3/passed3；模型和输入未改变。r4的Windows PowerShell启动器也实际通过，退出0。
+- 最新调试包：FPGA副本 deliverables/v0.5-ti60-debug-r4.zip（SHA256 a69b2c9e71b76ed2871ef127f71ddf4e889073c9bfc1bb0f29284b2c4b7dd187），58文件哈希与CRC通过。
+- Efinity工程：C:/Users/SteLl1a/Desktop/CNN-Tutorial-FPGA/artifacts/evsoc-4x4-fc-disable-map/Ti60_AR0135.xml。board-comparison-r1是旧ELF对照，board-reference-r1是参考ELF与PowerShell验证记录。
+- 板上最后下载4x4+FC Disable bit，参考ELF测试结束后CPU被halt；OpenOCD已关闭。断电后JTAG配置/ELF可能丢失，下次需下载r4配套bit。禁止写原fpga-w.-codex目录。
+- 工具：教程scripts/audit_int8_backends.py和generate_official_tinyml.py；FPGA tools/prepare_evsoc_resource_candidate.py、prepare_reference_validation.py、measure_evsoc_candidate.py、package_evsoc_resource_r4.py。
+- r3.1是被r4替代的未发布草稿，原未提交tools/package_evsoc_debug_r3.py、docs/CNN_ELF_RUN_R3_1.md及其本地zip保留，不将其当最新发布包。原outflow/Ti60_AR0135.tcl.out用户修改保留。
+- 下次先核对额度、Git/PR与当前硬件连接，阅读docs/05_experiments/v0.5/resource_r4.md。下一项实现原始灰度ROI快照/64x64采样、APB读入、TinyML连续循环、firmware_ready及结果Overlay；目前静态固件不发布实时ready，不能误判host连接状态。需要CDC、帧一致性、资源/时序与动态上板验证。
+- 两个现有Draft PR保持未合并：教程#7，FPGA#20。用户阶段6尚未确认，不能勾选。未开始第二模型。

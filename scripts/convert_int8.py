@@ -42,7 +42,10 @@ def convert(input_dir, output_dir):
         x = tf.keras.layers.MaxPool2D(2)(x)
     x = tf.keras.layers.AveragePooling2D(2)(x)
     x = tf.keras.layers.Flatten()(x)
-    dense = tf.keras.layers.Dense(3, name="logits")
+    class_count = len(manifest["classes"])
+    if class_count not in (3, 4):
+        raise ValueError("Expected 3 or 4 gesture classes")
+    dense = tf.keras.layers.Dense(class_count, name="logits")
     model = tf.keras.Model(inputs, dense(x))
     for i, layer in conv_layers:
         layer.set_weights([weights[f"features.{i}.weight"].transpose(2, 3, 1, 0), weights[f"features.{i}.bias"]])
@@ -90,10 +93,12 @@ def convert(input_dir, output_dir):
     labels = evaluation["labels"]
     float_accuracy = float(np.mean(keras_logits.argmax(1) == labels))
     int8_accuracy = float(np.mean(np.asarray(predictions) == labels))
-    confusion = np.bincount(labels * 3 + np.asarray(predictions), minlength=9).reshape(3, 3)
+    confusion = np.bincount(labels * class_count + np.asarray(predictions),
+                            minlength=class_count ** 2).reshape(class_count, class_count)
     operations = [op["name"] for op in audit["operations"]]
     recall = np.diag(confusion) / confusion.sum(1)
-    precision = np.divide(np.diag(confusion), confusion.sum(0), out=np.zeros(3), where=confusion.sum(0) != 0)
+    precision = np.divide(np.diag(confusion), confusion.sum(0),
+                          out=np.zeros(class_count), where=confusion.sum(0) != 0)
     f1 = np.divide(2 * precision * recall, precision + recall, out=np.zeros(3), where=precision + recall != 0)
     report = {"tensorflow": tf.__version__, "checkpoint_sha256": manifest["checkpoint_sha256"],
               "conversion_input_manifest_sha256": digest(input_dir / "manifest.json"),

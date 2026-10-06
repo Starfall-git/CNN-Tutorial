@@ -2,7 +2,7 @@
 
 当前版本：**v0.4.0 开发中：RISC-V 静态固件与 FPGA 接入**。GitHub：[Starfall-git/CNN-Tutorial](https://github.com/Starfall-git/CNN-Tutorial)（Private）。
 
-用户已确认并勾选**阶段 1–5**；PR #1/#2/#3 已合并，当前接入准备更新在 PR #4 和 FPGA Draft PR #20。已完成官方工具生成、手势应用交叉编译和 Overlay 模块仿真；阶段 6 的完整硬件接入、板上推理与实时叠加尚未完成。
+用户已确认并勾选**阶段 1–5**；PR #1/#2/#3/#4 已合并；阶段 6 在 `codex/evsoc-system-integration` 与 FPGA Draft PR #20 继续。已完成官方工具生成、手势应用交叉编译和 Overlay 模块仿真；阶段 6 的完整硬件接入、板上推理与实时叠加尚未完成。
 
 最新实测：26,371 参数，FP32 accuracy **95.70%**；全整数 INT8 accuracy **95.43%**、macro-F1 **0.9535**，模型 **33,240 字节**。量化下降 **0.27 个百分点**。这是已被观察过的合成数据基准，真实摄像头、无手背景与 FPGA FPS 仍待验证。
 
@@ -22,11 +22,14 @@
 
 ## 文档与学习入口
 
+2026-10-05 上板反馈：`v0.5-ti60-debug-r1` 的 JTAG `.bit` 下载后，实时摄像头 HDMI 与 COM8 控制正常；OpenOCD 可识别 Ti60 TAP，但访问 Sapphire DMI 超时。当前进行阶段 6 的“CPU 调试链路定位”，未完成 ELF 加载与三组 INT8 板上自检。见 [DMI 排查记录](docs/05_experiments/v0.5/jtag_dmi_diagnostics.md)。
+
 | 主题 | 文件 |
 |---|---|
 | 环境与启动 | [环境说明](docs/01_setup/environment.md) |
 | 模型与关键源码 | [灰度 CNN](docs/02_model/gray_gesture_cnn.md) |
 | 数据、训练、验证与云端流程 | [训练说明](docs/03_training/data_and_evaluation.md) |
+| r5 实拍问题后的四类采集准备 | [AR0135/HDMI 采集与会话分组](docs/03_training/live_r6_capture.md) |
 | 量化、板卡与摄像头约束 | [部署约定](docs/04_deployment/tinyml_contract.md) |
 | INT8 转换与 golden 回放 | [量化教程](docs/04_deployment/int8_conversion.md) |
 | FPGA 接入与独立副本 | [阶段 5 实施记录](docs/04_deployment/fpga_bringup.md) |
@@ -112,7 +115,7 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 |---|---|---|
 | 初始需求 | 已归档到 Git 历史 | 原始 MAIN 与本地资料边界 |
 | v0.1.0 | 阶段 1 已确认，PR #1 已合并 | [首个模型、教程与真实基线实验](docs/05_experiments/v0.1.0_baseline.md) |
-| v0.2.0 | PR #2 已按用户授权合并；阶段 2/3 待勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
+| v0.2.0 | PR #2 已按用户授权合并；阶段 2/3 已由用户勾选 | [序列分组、三个开发候选与完整训练池 refit](docs/05_experiments/v0.2/README.md) |
 | v0.3.0 | 阶段 4 桌面量化验证通过；PR #3 已合并 | [INT8 精度回归、图审计与 golden vectors](docs/05_experiments/v0.3/README.md) |
 
 ### 后续执行约定（用户补充）
@@ -131,3 +134,26 @@ Notebook 顺序：[00 环境](notebooks/00_environment.ipynb) → [01 搭建](no
 | 开发版本 | 状态 | 交付 |
 |---|---|---|
 | v0.4.0 | 阶段 5.3 静态交叉编译通过，待目标运行 | [PR #4](https://github.com/Starfall-git/CNN-Tutorial/pull/4)、[FPGA Draft #20](https://github.com/Starfall-git/fpga-w.-codex/pull/20) |
+
+阶段 6 接续：新增 [APB 手势结果发布验证](docs/05_experiments/v0.5/result_apb.md)。寄存器接口与真实跨时钟邮箱仿真通过，发布函数通过官方 RISC-V 编译；顶层接线、DDR仲裁及上板验收仍未完成。
+
+阶段 6 新进展：[独立 UART 推理/叠加控制与视频端点](docs/05_experiments/v0.5/uart_endpoint.md)组合仿真及上位机测试通过；继续在 [Draft PR #7](https://github.com/Starfall-git/CNN-Tutorial/pull/7) / FPGA Draft #20 推进实际顶层集成。
+
+阶段 6：实际 DDR3 视频副本的96MHz Sapphire RTL/模板/BSP已由官方工具生成成功，详见 [生成记录](docs/05_experiments/v0.5/sapphire_system_generation.json)。仅完成IP生成，顶层和内存映射未接通。
+
+阶段 6：[官方 SoC 子系统与 AI 内存窗口](docs/05_experiments/v0.5/subsystem.md)已写入代码，窗口仿真通过；官方加密IP的ModelSim验证未通过，待Efinity综合及实际顶层连接。
+
+阶段 6：[共享 DDR 缓冲、隔离与仲裁](docs/05_experiments/v0.5/shared_ddr.md)组合仿真通过，覆盖AI停顿及复位排空；尚未接物理顶层，720p带宽/时序与上板验证待完成。
+
+- 阶段6子步骤：官方AXI响应适配与真实SoC内存封装，组合仿真通过，顶层/综合/上板待完成：[记录](docs/05_experiments/v0.5/evsoc_memory.md)。
+
+- 阶段6子步骤：真实视频顶层接入官方SoC，综合及接口通过；2×2容量及PNR通过，时序未签核：[集成记录](docs/05_experiments/v0.5/top_integration.md)。
+
+- 阶段6子步骤已完成（2026-10-05）：[v0.5-ti60-debug-r1 上板调试包](docs/05_experiments/v0.5/debug_release.md)，包含官方生成的JTAG `.bit`、匹配的DDR3 ELF、JTAG可读静态自检状态、OpenOCD/GDB脚本，以及“TinyML 手势”GUI入口。33项相关host测试和48个包内文件哈希校验通过。用户首次编程截图为SPI Active using JTAG Bridge；COM8可打开但FPGA握手超时，需重新配置业务bit确认。尚未取得板上三组推理/实时Overlay/FPS结果，阶段6整体验收未完成。
+
+
+- 阶段6子步骤（2026-10-05）已完成：**现有ELF在Ti60上运行三组静态INT8推理**。r3修复Sapphire调试复位及CPU字节写地址，五个ELF段回读一致，三组Invoke均完成。严格逐值比较1/3通过，其余两组各差1；单次约174ms（约5.76次/秒，不含视频链路），尚未达到15FPS。详见 [实测与运行说明](docs/05_experiments/v0.5/elf_run_r3.md)。阶段6不勾选、不合并验收，按用户要求同步仓库后暂停，等待上板反馈。
+
+- 阶段6子步骤（2026-10-05恢复后）已完成：**4×4卷积资源优化与三组参考后端严格验证**。4×4+FC Disable为58819 XLR，静态Invoke约70.9ms；独立372张桌面后端对照解释了原两处±1差异，原XNNPACK golden保留。新增BUILTIN_REF验证ELF板端3/3严格通过。详见[r4记录](docs/05_experiments/v0.5/resource_r4.md)。实时采集/Overlay、端到端15FPS和时序签核仍待完成。
+
+- 阶段6子步骤（2026-10-06）：用户确认r4三组静态验证通过；新增 **r5动态摄像头输入、连续推理与UART独立开关**。实际采集输入与BUILTIN_REF逐值一致，已观测431次连续推理/提交，约13.7次/秒；关闭推理后计数停止，关闭叠加后推理继续。详见[r5运行指南](docs/05_experiments/v0.5/live_r5.md)。HDMI可见效果/实拍准确率等待反馈，阶段6尚未整体验收。

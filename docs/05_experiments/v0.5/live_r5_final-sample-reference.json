@@ -1,0 +1,20 @@
+{
+  "tensorflow": "2.15.1",
+  "backend": "BUILTIN_REF",
+  "input_sha256": "08d40c17bc03c10094cfb071bc588fc9ab268d60cb86e62de9c768d1ff146aca",
+  "model_sha256": "7891518a9b70ec6b3be8649123651780ce87ede1e69a9a49c394c17d203a0baa",
+  "checksum_verified": true,
+  "board": [
+    5,
+    70,
+    -92
+  ],
+  "reference": [
+    5,
+    70,
+    -92
+  ],
+  "exact_match": true,
+  "frame": 3357,
+  "completed": 1
+}

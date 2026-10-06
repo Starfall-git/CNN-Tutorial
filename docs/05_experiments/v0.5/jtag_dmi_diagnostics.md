@@ -1,0 +1,18 @@
+# 阶段 6：DMI 调试链路定位
+
+日期：2026-10-05。用户确认 JTAG `.bit` 下载后，HDMI 是随场景变化的实时摄像头画面，COM8 原上位机能连接。OpenOCD 识别 `0x10660a79` 后仍发生 DMI 2秒超时，尚未成功 examine/halt CPU；尚不能运行 GDB 加载应用。
+
+已核对实际生成的 Sapphire、USER1 顶层连线及官方 BSP 参数，与官方 YOLO demo 的硬 JTAG 隧道形式相符。实时视频是原视频链路工作的证据，不能替代 SoC 复位及调试域信号观测。此前的 SPI 桥接怀疑不再作为当前故障的首要解释。
+
+下一次实验使用独立副本 `CNN-Tutorial-FPGA/tools/diagnose_evsoc_jtag.ps1`，默认100 kHz，保留官方 init/halt、原2秒超时并记录详细日志。脚本不更改原 release、硬件与 ELF，不写 Flash；运行时可能暂停 CPU。完整操作及证据见 FPGA 副本 `docs/CNN_JTAG_DIAGNOSTICS.md`。100 kHz 能否连接仍待板上实测，不据此认定跨时钟域违例无害。
+
+本次交付的是诊断工具与源码审计，未完成阶段6；下一验收点是 OpenOCD 成功 examine/halt CPU，然后才是 ELF 下载及三组 INT8 自检。
+
+后续100 kHz实测仍超时：用户片段中DTMCS=`0x7c71`、DMI持续Busy，与生成RTL的version=1、abits=7、idle=7、dmistat=3对应。已定位并修复诊断脚本的Windows日志路径转义错误，用官方OpenOCD离线echo/shutdown验证日志确实落盘；该修复不代表DMI故障修复。下一步采集从启动开始的完整日志，定位首次请求及复位/跨域响应。用户已明确授权使用credits继续，后续不再仅因普通额度耗尽而停止。
+
+已获得16:22、16:24两次完整日志：初始DTMCS=`0x7071`、dmistat=0，首次向DMCONTROL（DMI地址0x10）写0后即持续Busy。官方生成DebugModule对此写入有直接寄存响应，不要求ELF先运行；应观察ai_reset/debugCd复位和DMI跨域握手。无需重复相同的100 kHz试验。正在等待现有LED校准状态，以确定后续硬件诊断观察点；尚未证明具体硬件根因。
+
+
+## 2026-10-05 后续已定位
+
+r2将Sapphire外部复位接全局后CPU调试恢复；r3修复CPU带字节使能的DDR地址后ELF五段回读一致。启动前reset halt后，现有ELF完成三组静态推理，严格数值比较1/3通过，其余各差1。当前不是DMI连通故障，详见 [板上实测及复现](elf_run_r3.md)。

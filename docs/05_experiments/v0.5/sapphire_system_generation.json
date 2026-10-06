@@ -1,0 +1,61 @@
+{
+  "generation_exit": 0,
+  "top_integrated": false,
+  "hardware_compiled": false,
+  "programmed": false,
+  "sha256": {
+    "sapphire_config.json": "d54073f0302d7b4b47ce139e45ad7cd59c55d4a3b05dedc52df13d176af9708c",
+    "ip/SapphireSoc/settings.json": "77c3710750c287630fea48d334b5c9f3e6ef5cc070581576936753775e97804f",
+    "ip/SapphireSoc/SapphireSoc.v": "c213e37c7a1f0469b67ace8fafa29f1f180ab05cd5b237c2cbd7d7aa40c77bdd",
+    "ip/SapphireSoc/SapphireSoc_tmpl.v": "affdc8df2d91f11edab2b27ed98005e533e02419c824f95daa82b4ab1efa55ef",
+    "embedded_sw/SapphireSoc/bsp/efinix/EfxSapphireSoc/include/soc.h": "7ccd4fe16fccdf746888d13635ba74541e72f3f90e766afead4fc82bd7a2bc16",
+    "generate.log": "107d19c653bde7f88e001a3af60879e016fd7194d0499bfa812e869bf66038d0"
+  },
+  "bsp_clock_and_apb_defines": [
+    "#define SYSTEM_CLINT_HZ 96000000",
+    "#define IO_APB_SLAVE_1_INPUT 0xf8100000",
+    "#define IO_APB_SLAVE_1_INPUT_SIZE 0x10000"
+  ],
+  "preparation": {
+    "source_checkout": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA",
+    "output": "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-system-r1",
+    "overrides": {
+      "DEVKIT": "0",
+      "DEVKIT_CUSTOM": "\"Single RS232-HS\"",
+      "Frequency": "96",
+      "PeriFrequency": "96",
+      "DDR_AXI4": "1'b0",
+      "DDRCLK_DOMAIN": "1",
+      "DDR_OPT": "1",
+      "DDRSize": "32'd67108864",
+      "LDSize": "65532",
+      "GPIO0": "1'b0",
+      "I2C0": "1'b0",
+      "APBSlave0": "1'b0",
+      "APBSlave1": "1'b1",
+      "HexFile_PathEnable": "1'b0",
+      "HexFile_Path": "\"''\""
+    },
+    "inputs_sha256": {
+      "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\example_top.v": "559888e19b60bdc229e85c0ab35d13b6f9064fce07a26ce66644c5d328dd0254",
+      "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\Ti60_AR0135.xml": "dbdc9d9423fb3948a51e95e2ec08c21451659030a13443c87186d8d255a56adc",
+      "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\Ti60_AR0135.peri.xml": "770f2467e3eb5284fd190814a1b5070b202e31a780930339e0b38d1f2a2cf59f",
+      "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\ip\\DdrCtrl\\settings.json": "b1f4335c6a9a2ed9bf2ed4620b8eff374576c5d0b205a48e8429a0b7ab276d01",
+      "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\ip\\SapphireSoc\\settings.json": "0dded91584c68598527be221e8e8e544972cc98e04f109c21ed4b66fe5cf880b",
+      "C:\\Users\\SteLl1a\\Desktop\\CNN-Tutorial-FPGA\\artifacts\\evsoc-gesture-r1\\edge_vision_soc.v": "9a4924612d45b372896d7f7188201ad9a2adfb10e164a9b1ea6a8ec959e20b68"
+    },
+    "axi_cpu_peripheral_mhz": 96,
+    "physical_ddr_configuration_changed": false,
+    "logical_ai_memory_bytes": 67108864,
+    "planned_physical_ai_base": "0x04000000",
+    "memory_translation_implemented": false,
+    "top_integrated": false,
+    "hardware_compiled": false,
+    "programmed": false,
+    "notes": [
+      "48 MiB video storage must remain protected.",
+      "Both CPU and accelerator need the same checked logical-to-physical translation.",
+      "SoC IP is not yet wired into example_top; generated BSP is not board-ready."
+    ]
+  }
+}
